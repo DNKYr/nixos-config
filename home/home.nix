@@ -10,6 +10,14 @@
 		# Browser
 		firefox
 
+		# Code
+
+		#C / C++ Compiler
+		gcc
+
+		#Python
+		python312
+
 		# Command line tools
 		fastfetch
 		gh # Github CLI
@@ -34,6 +42,10 @@
 		
 	];
 
+
+	programs.gcc = {
+		enable = true;
+	};
 	
 	programs.git = {
 		enable = true;
@@ -57,6 +69,14 @@
 	};
 
 	programs.kitty = {
+		enable = true;
+
+		settings = {
+			shell = "${pkgs.zsh}/bin/zsh";
+		};
+	};
+
+	programs.zellij = {
 		enable = true;
 	};
 
