@@ -16,6 +16,9 @@
 	nixosConfigurations = {
 	    aether = nixpkgs.lib.nixosSystem{
 	        modules = [
+		    # Import disk optimize file
+		    ./optimizeStore.nix
+
 		    # Import previous configuration
 		    ./configuration.nix
 
