@@ -6,19 +6,25 @@
 	
 
 	home.packages = with pkgs; [
-		fastfetch
-		kitty
-		gh
 		
-		zip
-		unzip
-
-		zed-editor
+		# Browser
 		firefox
-		neovim
 
-		zellij
-		lsd
+		# Command line tools
+		fastfetch
+		gh # Github CLI
+		kitty # terminal eluminator
+		lsd # new-gen ls
+		zellij # terminal multiplixer
+
+		# Editors
+		neovim
+		zed-editor
+
+		# Utility
+		unzip
+		zip
+
 		
 	];
 
@@ -42,6 +48,10 @@
 			git_protocol = "https";
 		};
 		gitCredentialHelper.enable = true;
+	};
+
+	programs.kitty = {
+		enable = true;
 	};
 
 

@@ -1,5 +1,5 @@
 {
-    description = "A simple nix flakes";
+    description = "DNKYr's nix flake";
     
     inputs = {
         # Adding package source for nix packages
