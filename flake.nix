@@ -6,7 +6,8 @@
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
 	home-manager = {
-	    url = "github:nix-community/home-manager/release-25.11";
+	    # Make home-manager set to the master branch
+	    url = "github:nix-community/home-manager";
 	    inputs.nixpkgs.follows = "nixpkgs";
 	};
     };
