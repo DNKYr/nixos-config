@@ -16,6 +16,9 @@
 		zed-editor
 		firefox
 		neovim
+
+		zellij
+		lsd
 		
 	];
 
