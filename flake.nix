@@ -25,7 +25,7 @@
 		        home-manager.useGlobalPkgs = true;
 		        home-manager.useUserPackages = true;
 
-		        home-manager.users.dnkyr = import ./home.nix;
+		        home-manager.users.dnkyr = import ./home/home.nix;
 		    }
 	        ];
 	    };
