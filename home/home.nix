@@ -3,6 +3,7 @@
 {
 	imports = [
 		./modules/neovim.nix
+		./modules/shell.nix
 	];
 	home.username = "dnkyr";
 	home.homeDirectory = "/home/dnkyr";
@@ -74,24 +75,5 @@
 		enableZshIntegration = true;
 	};
 
-	programs.zsh = {
-		enable = true;
-		enableCompletion = true;
-		autosuggestion.enable = true;
-		syntaxHighlighting.enable = true;
-
-		oh-my-zsh = {
-			enable = true;
-			plugins = [
-				"git"
-			];
-		};
-	};
-
-
-
 	home.stateVersion = "25.11";
-	 
-
-
 }
