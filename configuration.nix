@@ -20,6 +20,7 @@
 
   environment.variables.EDITORS = "vim";
 
+  boot.growPartition = true;
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
