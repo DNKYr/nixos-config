@@ -1,6 +1,9 @@
 {config, pkgs, ...}:
 
 {
+	imports = [
+		./modules/neovim.nix
+	];
 	home.username = "dnkyr";
 	home.homeDirectory = "/home/dnkyr";
 	
@@ -64,11 +67,6 @@
 		settings = {
 			shell = "${pkgs.zsh}/bin/zsh";
 		};
-	};
-
-	programs.neovim = {
-		enable = true;
-
 	};
 
 	programs.zellij = {
