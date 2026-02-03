@@ -73,6 +73,9 @@
 	programs.zellij = {
 		enable = true;
 		enableZshIntegration = true;
+		settings = {
+			default_shell = "${pkgs.zsh}/bin/zsh";
+		};
 	};
 
 	home.stateVersion = "25.11";
