@@ -12,5 +12,14 @@
 				"git"
 			];
 		};
+
+		shellAliases = {
+			sl = "\\ls";
+			ls = "lsd --group-dirs first";
+			ll = "lsd --group-dirs first -al";
+			l = "lsd -l";
+
+			tree = "lsd --tree --group-dirs first --depth=2 2>/dev/null";
+		};
 	};
 }
