@@ -12,28 +12,18 @@
 
 		# Code
 
-		#C / C++ Compiler
-		gcc
-
 		#Python
 		python312
 
 		# Command line tools
 		fastfetch
-		gh # Github CLI
-		kitty # terminal eluminator
 		lsd # new-gen ls
-		zellij # terminal multiplixer
 
 		# Editors
-		neovim
 		zed-editor
 
 		# Shell
 		bash
-
-		oh-my-zsh
-		zsh
 
 		# Utility
 		unzip
@@ -76,8 +66,14 @@
 		};
 	};
 
+	programs.neovim = {
+		enable = true;
+
+	};
+
 	programs.zellij = {
 		enable = true;
+		enableZshIntegration = true;
 	};
 
 	programs.zsh = {
