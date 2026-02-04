@@ -8,7 +8,10 @@
 	home.username = "dnkyr";
 	home.homeDirectory = "/home/dnkyr";
 	
+	# TODO: Update the config file call to DRY principle 
 	xdg.configFile."nvim".source = ./modules/nvim-configs;
+	xdg.configFile."niri".source = ./modules/niri-configs;
+	
 
 	home.packages = with pkgs; [
 		
