@@ -1,4 +1,9 @@
 {config, pkgs, ...}:
+let
+
+configs = ../configs;
+
+in
 
 {
 	imports = [
@@ -9,8 +14,8 @@
 	home.homeDirectory = "/home/dnkyr";
 	
 	# TODO: Update the config file call to DRY principle 
-	xdg.configFile."nvim".source = ./modules/nvim-configs;
-	xdg.configFile."niri".source = ./modules/niri-configs;
+	xdg.configFile."nvim".source = "${configs}/nvim/";
+	xdg.configFile."niri".source = "${configs}/niri/";
 	
 
 	home.packages = with pkgs; [
