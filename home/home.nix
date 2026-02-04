@@ -18,6 +18,7 @@
 		# Code
 
 		#Python
+		gcc
 		python312
 
 		# Command line tools
@@ -31,7 +32,7 @@
 		bash
 
 		# Utility
-		# Neovim dependency
+		# Neovim Dependency
 		ripgrep
 		lazygit
 		gdu
@@ -41,14 +42,26 @@
 		unzip
 		zip
 
-		
+		#Niri Dependency
+		glibc
+		wayland
+		wayland-protocols
+		libinput
+		libdrm
+		libxkbcommon
+		pixman
+		meson
+		ninja
+		libdisplay-info
+		libliftoff
+		hwdata
+		seatd
+		pcre2
+
+		#Niri optional
+		alacritty
 	];
 
-
-	programs.gcc = {
-		enable = true;
-	};
-	
 	programs.git = {
 		enable = true;
 		settings = {
@@ -69,6 +82,7 @@
 		};
 		gitCredentialHelper.enable = true;
 	};
+
 
 	programs.kitty = {
 		enable = true;
