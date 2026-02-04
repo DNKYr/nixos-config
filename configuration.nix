@@ -101,6 +101,9 @@
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
+  # Install Niri
+	programs.niri.enable = true;
+
   # Install firefox.
   programs.firefox.enable = true;
 
