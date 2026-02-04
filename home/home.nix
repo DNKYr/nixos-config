@@ -8,6 +8,7 @@
 	home.username = "dnkyr";
 	home.homeDirectory = "/home/dnkyr";
 	
+	#xdg.configFile."nvim".source = ./modules/nvim-configs;
 
 	home.packages = with pkgs; [
 		
@@ -30,6 +31,13 @@
 		bash
 
 		# Utility
+		# Neovim dependency
+		ripgrep
+		lazygit
+		gdu
+		bottom
+		nodejs
+
 		unzip
 		zip
 
