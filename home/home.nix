@@ -1,115 +1,110 @@
-{config, pkgs, ...}:
+{ config, pkgs, ... }:
 let
 
-configs = ../configs;
+  configs = ../configs;
 
 in
 
 {
-	imports = [
-		./modules/neovim.nix
-		./modules/shell.nix
-	];
-	home.username = "dnkyr";
-	home.homeDirectory = "/home/dnkyr";
-	
-	# TODO: Update the config file call to DRY principle 
-	xdg.configFile."nvim".source = "${configs}/nvim/";
-	xdg.configFile."niri".source = "${configs}/niri/";
-	
+  imports = [
+    ./modules/neovim.nix
+    ./modules/shell.nix
+  ];
+  home.username = "dnkyr";
+  home.homeDirectory = "/home/dnkyr";
 
-	home.packages = with pkgs; [
-		
-		# Browser
-		firefox
+  # TODO: Update the config file call to DRY principle
+  xdg.configFile."nvim".source = "${configs}/nvim/";
+  xdg.configFile."niri".source = "${configs}/niri/";
 
-		# Code
+  home.packages = with pkgs; [
 
-		# Nix
-		nil
-		nixpkgs-fmt
-		#Python
-		gcc
-		python312
+    # Browser
+    firefox
 
-		# Command line tools
-		fastfetch
-		lsd # new-gen ls
+    # Code
 
-		# Editors
-		zed-editor
+    #Python
+    gcc
+    python312
 
-		# Shell
-		bash
+    # Command line tools
+    fastfetch
+    lsd # new-gen ls
 
-		# Utility
-		# Neovim Dependency
-		ripgrep
-		lazygit
-		gdu
-		bottom
-		nodejs
+    # Editors
+    zed-editor
 
-		unzip
-		zip
+    # Shell
+    bash
 
-		#Niri Dependency
-		glibc
-		wayland
-		wayland-protocols
-		libinput
-		libdrm
-		libxkbcommon
-		pixman
-		meson
-		ninja
-		libdisplay-info
-		libliftoff
-		hwdata
-		seatd
-		pcre2
+    # Utility
+    # Neovim Dependency
+    ripgrep
+    lazygit
+    gdu
+    bottom
+    nodejs
 
-		#Niri optional
-		alacritty
-	];
+    unzip
+    zip
 
-	programs.git = {
-		enable = true;
-		settings = {
-			user = {
-				name = "DNKYr";
-				email = "dnkyr2007@gmail.com";
-			};
-			
-			pull.rebase = true;
-			init.defaultBranch = "main";
-		};
-	};
+    #Niri Dependency
+    glibc
+    wayland
+    wayland-protocols
+    libinput
+    libdrm
+    libxkbcommon
+    pixman
+    meson
+    ninja
+    libdisplay-info
+    libliftoff
+    hwdata
+    seatd
+    pcre2
 
-	programs.gh = {
-		enable = true;
-		settings = {
-			git_protocol = "https";
-		};
-		gitCredentialHelper.enable = true;
-	};
+    #Niri optional
+    alacritty
+  ];
 
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "DNKYr";
+        email = "dnkyr2007@gmail.com";
+      };
 
-	programs.kitty = {
-		enable = true;
+      pull.rebase = true;
+      init.defaultBranch = "main";
+    };
+  };
 
-		settings = {
-			shell = "${pkgs.zsh}/bin/zsh";
-		};
-	};
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "https";
+    };
+    gitCredentialHelper.enable = true;
+  };
 
-	programs.zellij = {
-		enable = true;
-		enableZshIntegration = true;
-		settings = {
-			default_shell = "${pkgs.zsh}/bin/zsh";
-		};
-	};
+  programs.kitty = {
+    enable = true;
 
-	home.stateVersion = "25.11";
+    settings = {
+      shell = "${pkgs.zsh}/bin/zsh";
+    };
+  };
+
+  programs.zellij = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      default_shell = "${pkgs.zsh}/bin/zsh";
+    };
+  };
+
+  home.stateVersion = "25.11";
 }

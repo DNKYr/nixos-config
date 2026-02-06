@@ -40,6 +40,8 @@ return {
     -- enable servers that you already have installed without mason
     servers = {
       "nil_ls",
+      "lua_ls",
+      "pyright"
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
@@ -47,8 +49,11 @@ return {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
     },
 
+    -- don't let mason complaint about not handle lsp server 
     skip_setup = {
-      "nil_ls"
+      "nil_ls", 
+      "lua_ls",
+      "pyright"
     },
     -- customize how language servers are attached
     handlers = {
