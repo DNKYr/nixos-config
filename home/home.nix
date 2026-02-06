@@ -24,8 +24,13 @@ in
 
     # Code
 
-    #Python
+    # Compilers and debuggers for C++
     gcc
+    gdb
+    cmake
+    gnumake
+
+    #Python
     python312
 
     # Command line tools
