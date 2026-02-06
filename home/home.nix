@@ -25,6 +25,9 @@ in
 
 		# Code
 
+		# Nix
+		nil
+		nixpkgs-fmt
 		#Python
 		gcc
 		python312
