@@ -24,12 +24,6 @@ in
 
     # Code
 
-    # Compilers and debuggers for C++
-    gcc
-    gdb
-    cmake
-    gnumake
-
     #Python
     python312
 
