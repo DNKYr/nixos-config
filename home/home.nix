@@ -30,6 +30,7 @@ in
     # Command line tools
     fastfetch
     lsd # new-gen ls
+    yazi # Command line file explorer
 
     # Editors
     zed-editor
