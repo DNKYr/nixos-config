@@ -5,13 +5,16 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Enable experimental flake feature
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   environment.systemPackages = with pkgs; [
     git
     vim
@@ -54,11 +57,12 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
+  # Enable the niri Desktop Environment.
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  programs.niri.package = pkgs.niri;
+  programs.niri.enable = true;
+  services.displayManager.sessionPackages = [ pkgs.niri ];
   # Configure keymap in X11
 
   # Enable CUPS to print documents.
@@ -87,9 +91,12 @@
   users.users.dnkyr = {
     isNormalUser = true;
     description = "david";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -100,9 +107,6 @@
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
-
-  # Install Niri
-	programs.niri.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
