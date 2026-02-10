@@ -11,14 +11,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    quickshell = {
+      url = "github:outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.quickshell.follows = "quickshell";
     };
   };
 
   outputs =
-    inputs@{ nixpkgs, home-manager, ... }:
+    inputs@{
+      nixpkgs,
+      home-manager,
+      quickshell,
+      noctalia,
+      ...
+    }:
     {
       nixosConfigurations = {
         aether = nixpkgs.lib.nixosSystem {
@@ -33,6 +45,7 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
+                extraSpecialArgs = { inherit inputs; };
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.dnkyr = import ./home/home.nix;
