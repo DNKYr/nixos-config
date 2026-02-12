@@ -9,6 +9,7 @@ in
   imports = [
     ./modules/neovim.nix
     ./modules/shell.nix
+    ./modules/claude.nix
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
