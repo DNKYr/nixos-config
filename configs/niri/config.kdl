@@ -366,6 +366,12 @@ binds {
 
     // Fire out terminal
     Mod+Return { spawn "kitty"; }
+
+    // Noctaria Keybinds
+    Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
+    Mod+S { spawn-sh "noctalia-shell ipc call controlCenter toggle"; }
+    Mod+Comma { spawn-sh "noctalia-shell ipc call settings toggle"; }
+
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
@@ -551,9 +557,9 @@ binds {
     Mod+BracketRight { consume-or-expel-window-right; }
 
     // Consume one window from the right to the bottom of the focused column.
-    Mod+Comma  { consume-window-into-column; }
+    // Mod+Comma  { consume-window-into-column; }
     // Expel the bottom window from the focused column to the right.
-    Mod+Period { expel-window-from-column; }
+    // Mod+Period { expel-window-from-column; }
 
     Mod+R { switch-preset-column-width; }
     // Cycling through the presets in reverse order is also possible.
