@@ -24,3 +24,4 @@ Install Neovim and Configure AstroNvim
 Configure Nix, Lua, Python, and C++ LSP
 Replace Some GNU tools with modern one (ls -> lsd)
 Install yazi, a terminal file explorer
+Add Theme for Zellij

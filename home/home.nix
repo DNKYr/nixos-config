@@ -112,6 +112,7 @@ in
     enableZshIntegration = true;
     settings = {
       default_shell = "${pkgs.zsh}/bin/zsh";
+      theme = "tokyo-night";
     };
   };
 
