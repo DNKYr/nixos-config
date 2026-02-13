@@ -10,6 +10,7 @@ in
     ./modules/neovim.nix
     ./modules/shell.nix
     ./modules/claude.nix
+    ./modules/noctalia.nix
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
