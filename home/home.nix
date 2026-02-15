@@ -37,6 +37,7 @@ in
     python312
 
     # Command line tools
+    bat # cat replacement
     fastfetch
     lsd # new-gen ls
     yazi # Command line file explorer
