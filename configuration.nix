@@ -19,6 +19,7 @@
     git
     vim
     wget
+    apt-get
   ];
 
   environment.variables.EDITORS = "vim";
