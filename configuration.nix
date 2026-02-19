@@ -114,6 +114,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Allow fullscreen in VirtualBox
+  virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.guest.dragAndDrop = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #environment.systemPackages = with pkgs; [
