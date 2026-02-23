@@ -7,8 +7,7 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration-vm.nix # REMOVE THIS WHEN ON LAPTOP
-    # ./hardware-configuration-laptop.nix
+    ./hardware-configuration.nix 
   ];
 
   # Enable experimental flake feature
@@ -22,13 +21,13 @@
     wget
   ];
 
-  environment.variables.EDITORS = "vim";
-
   boot.growPartition = true;
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+
+  environment.variables.EDITORS = "vim";
 
   networking.hostName = "aether"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
