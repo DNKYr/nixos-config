@@ -7,7 +7,8 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    ./hardware-configuration-vm.nix # REMOVE THIS WHEN ON LAPTOP
+    # ./hardware-configuration-laptop.nix
   ];
 
   # Enable experimental flake feature
