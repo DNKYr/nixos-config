@@ -38,6 +38,7 @@ in
     python312
 
     # Command line tools
+    ani-cli # anime watcher
     bat # cat replacement
     fastfetch
     lsd # new-gen ls
@@ -78,6 +79,7 @@ in
 
     #Niri optional
     alacritty
+    xwayland-satellite
   ];
 
   programs.direnv = {
