@@ -7,7 +7,7 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix 
+    ./hardware-configuration.nix
   ];
 
   # Enable experimental flake feature
@@ -57,12 +57,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the niri Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
-  programs.niri.package = pkgs.niri;
-  programs.niri.enable = true;
-  services.displayManager.sessionPackages = [ pkgs.niri ];
   # Configure keymap in X11
 
   # Enable CUPS to print documents.
