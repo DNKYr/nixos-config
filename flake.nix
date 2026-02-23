@@ -38,8 +38,11 @@
             # Import disk optimize file
             ./optimizeStore.nix
 
-            # Import previous configuration
-            ./configuration.nix
+            # Import virtual machine configuration
+            # vm/configuration.nix # Comment it out on Laptop
+
+	    # Import laptop configuration
+            laptop/configuration.nix
 
             # Add home-manager module
             home-manager.nixosModules.home-manager
