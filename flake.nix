@@ -53,7 +53,7 @@
                 extraSpecialArgs = { inherit inputs; };
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.dnkyr = import ./home/home.nix;
+                users.dnkyr = import ./home;
                 backupFileExtension = "backup";
               };
             }
