@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    bash
+  ];
   programs.zsh = {
     enable = true;
     enableCompletion = true;
