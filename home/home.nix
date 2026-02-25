@@ -35,7 +35,8 @@ in
     # Code
 
     #Python
-    python312
+    python314
+    uv
 
     # Command line tools
     ani-cli # anime watcher
@@ -47,17 +48,7 @@ in
     # Editors
     zed-editor
 
-    # Shell
-    bash
-
     # Utility
-    # Neovim Dependency
-    ripgrep
-    lazygit
-    gdu
-    bottom
-    nodejs
-
     unzip
     zip
 
