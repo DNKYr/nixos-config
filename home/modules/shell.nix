@@ -27,4 +27,8 @@
       tree = "lsd --tree --group-dirs first --depth=2 2>/dev/null";
     };
   };
+
+  programs.nushell = {
+    enable = true;
+  };
 }

@@ -69,10 +69,15 @@ in
     pcre2
 
     #Niri optional
-    alacritty
     xwayland-satellite
   ];
 
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      terminal.shell = "${pkgs.zsh}/bin/zsh";
+    };
+  };
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -111,7 +116,7 @@ in
     enable = true;
     enableZshIntegration = true;
     settings = {
-      default_shell = "${pkgs.zsh}/bin/zsh";
+      default_shell = "${pkgs.nushell}/bin/nu";
       theme = "tokyo-night";
     };
   };
