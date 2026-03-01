@@ -32,6 +32,8 @@ in
     # Browser
     firefox
 
+    # Communication
+    telegram-desktop
     # Code
 
     #Python
