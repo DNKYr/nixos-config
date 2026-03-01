@@ -38,6 +38,8 @@
             # Import disk optimize file
             ./optimizeStore.nix
 
+            # Import Font
+            ./modules/font.nix
             # Import niri modules
             ./modules/niri.nix
             # Import virtual machine configuration
