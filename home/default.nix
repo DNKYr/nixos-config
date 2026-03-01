@@ -75,7 +75,23 @@ in
   programs.alacritty = {
     enable = true;
     settings = {
-      terminal.shell = "${pkgs.zsh}/bin/zsh";
+      window = {
+        opacity = 0.93;
+        startup_mode = "Maximized";
+        dynamic_title = true;
+      };
+
+      terminal = {
+        shell = {
+          program = "${pkgs.zsh}/bin/zsh";
+        };
+      };
+
+      font = {
+        normal = {
+          family = "FiraCode Nerd Font";
+        };
+      };
     };
   };
   programs.direnv = {
