@@ -8,7 +8,7 @@ in
 {
   imports = [
     ./modules/neovim.nix
-    ./modules/shell.nix
+    ./modules/shell
     ./modules/noctalia.nix
     ./modules/zen-browser.nix
     ./modules/claude.nix
@@ -75,28 +75,6 @@ in
     xwayland-satellite
   ];
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      window = {
-        opacity = 0.93;
-        startup_mode = "Maximized";
-        dynamic_title = true;
-      };
-
-      terminal = {
-        shell = {
-          program = "${pkgs.zsh}/bin/zsh";
-        };
-      };
-
-      font = {
-        normal = {
-          family = "FiraCode Nerd Font";
-        };
-      };
-    };
-  };
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -121,23 +99,6 @@ in
       git_protocol = "https";
     };
     gitCredentialHelper.enable = true;
-  };
-
-  programs.kitty = {
-    enable = true;
-
-    settings = {
-      shell = "${pkgs.zsh}/bin/zsh";
-    };
-  };
-
-  programs.zellij = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      default_shell = "${pkgs.nushell}/bin/nu";
-      theme = "tokyo-night";
-    };
   };
 
   home.stateVersion = "25.11";
