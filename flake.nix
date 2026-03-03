@@ -43,10 +43,8 @@
             # Import disk optimize file
             ./optimizeStore.nix
 
-            # Import Font
-            ./modules/font.nix
-            # Import niri modules
-            ./modules/niri.nix
+            # Import modules
+            ./modules
             # Import virtual machine configuration
             # ./vm/configuration.nix # Comment it out on Laptop
 
