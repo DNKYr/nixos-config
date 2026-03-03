@@ -2,7 +2,9 @@
 
 {
   fonts.packages = with pkgs; [
-    #nerdfonts
+    # Google fonts
+    google-fonts
+    # nerdfonts
     nerd-fonts.symbols-only
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
