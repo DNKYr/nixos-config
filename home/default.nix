@@ -31,6 +31,7 @@ in
 
     # Browser
     firefox
+    tor-browser
 
     # Communication
     telegram-desktop
