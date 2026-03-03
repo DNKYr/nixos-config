@@ -10,4 +10,10 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
   ];
+
+  fonts.fontconfig = {
+    defaultFonts = {
+      serif = [ "Shippori Mincho" ];
+    };
+  };
 }
