@@ -10,13 +10,13 @@ in
     ./modules/neovim.nix
     ./modules/shell.nix
     ./modules/noctalia.nix
+    ./modules/zen-browser.nix
     ./modules/claude.nix
     ./modules/cpp-dev.nix
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
 
-  # TODO: Update the config file call to DRY principle
   xdg.configFile."nvim".source = "${configs}/nvim/";
   xdg.configFile."niri".source = "${configs}/niri/";
 
