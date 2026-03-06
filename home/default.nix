@@ -54,6 +54,7 @@ in
     yazi # Command line file explorer
 
     # Editors
+    obsidian
     zed-editor
 
     # Utility
