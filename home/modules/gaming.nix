@@ -7,6 +7,6 @@
 
 {
   home.packages = [
-    inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
+    inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
   ];
 }
