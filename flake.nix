@@ -44,6 +44,7 @@
     {
       nixosConfigurations = {
         aether = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
           modules = [
             # Import disk optimize file
             ./optimizeStore.nix
