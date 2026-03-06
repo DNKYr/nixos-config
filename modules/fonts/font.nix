@@ -13,7 +13,12 @@
 
   fonts.fontconfig = {
     defaultFonts = {
-      serif = [ "Shippori Mincho" ];
+      serif = [
+        "Shippori Mincho"
+      ];
+      sansSerif = [
+        "Klee One"
+      ];
     };
   };
 }
