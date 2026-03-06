@@ -42,5 +42,7 @@ in
         Default = "ddg";
       };
     };
+
+    suppressXdgMigrationWarning = true;
   };
 }
