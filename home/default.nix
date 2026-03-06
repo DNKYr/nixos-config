@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
 
   configs = ../configs;
@@ -13,6 +17,7 @@ in
     ./modules/zen-browser.nix
     ./modules/claude.nix
     ./modules/cpp-dev.nix
+    ./modules/gaming.nix
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
