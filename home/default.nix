@@ -42,6 +42,10 @@ in
     telegram-desktop
     # Code
 
+    #Javascript runtime
+    bun
+    pnpm
+
     #Python
     python314
     uv
