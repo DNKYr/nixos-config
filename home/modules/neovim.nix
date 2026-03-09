@@ -10,6 +10,10 @@
     bottom
     nodejs
 
+    # JS/TS package managers & runtimes
+    bun
+    pnpm
+
   ];
   programs.neovim = {
     enable = true;
