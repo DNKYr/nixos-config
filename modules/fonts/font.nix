@@ -17,6 +17,8 @@
         "Shippori Mincho"
       ];
       sansSerif = [
+        "Noto Sans Traditional Chinese"
+        "Noto Sans Simplified Chinese"
         "Klee One"
       ];
     };
