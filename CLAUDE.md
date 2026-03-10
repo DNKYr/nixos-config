@@ -22,6 +22,12 @@
 
 ---
 
+> **Extended guidelines for Claude are in [`agents-spec/`](agents-spec/):**
+> - [`agents-spec/coding-standard.md`](agents-spec/coding-standard.md) — module length, granularity, naming, package management rules
+> - [`agents-spec/workflow.md`](agents-spec/workflow.md) — setup, rebuild steps, commit conventions, flake update flow
+
+---
+
 ## Project Overview
 
 A Nix flakes-based NixOS configuration for a single machine (`aether`). System-level config (boot, networking, hardware) lives under `laptop/`. User environment (packages, dotfiles, shell) is managed by home-manager under `home/`. External programs with no nixpkgs packages are pulled in via flake inputs (noctalia shell, zen-browser, nix-gaming).
@@ -38,16 +44,27 @@ flake.nix (nixosConfigurations.aether)
     │
     ├── optimizeStore.nix         (GC policy, store dedup)
     ├── modules/                  (NixOS system-level modules)
+    │     ├── default.nix         (imports niri.nix + fonts/)
     │     ├── niri.nix            (Niri Wayland compositor)
-    │     └── fonts/font.nix      (system font packages + fontconfig defaults)
+    │     └── fonts/
+    │           ├── default.nix   (imports font.nix + fcitx5.nix)
+    │           ├── font.nix      (system font packages + fontconfig defaults)
+    │           └── fcitx5.nix    (fcitx5 IME with mozc + Chinese addons)
     ├── laptop/
     │     ├── configuration.nix   (boot, networking, users, hardware services)
     │     └── hardware-configuration.nix  ← AUTO-GENERATED, never edit
+    ├── vm/
+    │     ├── configuration.nix   (VM-specific system config)
+    │     └── hardware-configuration.nix
     └── home-manager (home/)
           ├── default.nix         (packages, git, xdg symlinks, direnv)
+          ├── wallpapers/         (wallpaper images referenced by noctalia)
           └── modules/
                 ├── neovim.nix    (neovim + LSP packages)
-                ├── shell/        (zsh, nushell, starship, alacritty, kitty, zellij)
+                ├── shell/
+                │     ├── default.nix   (imports shell.nix + terminal.nix)
+                │     ├── shell.nix     (zsh, nushell, starship)
+                │     └── terminal.nix  (alacritty, kitty, zellij)
                 ├── noctalia.nix  (desktop shell via noctalia flake input)
                 ├── zen-browser.nix  (browser + extensions via zen-browser flake)
                 ├── claude.nix    (Claude Code)
@@ -66,21 +83,6 @@ configs/  (raw dotfiles, symlinked via xdg.configFile in home/default.nix)
 
 ---
 
-## Coding Standards
-
-| Concern | Rule | Why |
-|---------|------|-----|
-| Module file length | Soft max ~100 lines | Existing modules are 10–45 lines; growth beyond ~100 is a sign it should be split |
-| Module granularity | One logical concern per file | Makes it easy to enable/disable features by commenting out an import |
-| `inputs` access | Only declare `inputs` in module args if the module actually uses a flake input | Keeps unused args out of signatures |
-| Package management | Prefer `home.packages` for user tools; use `programs.<name>` when home-manager has a module | `programs.*` modules generate correct config file paths automatically |
-| Raw configs | Use `xdg.configFile.<name>.source = "${configs}/<dir>"` to symlink entire dirs | Keeps AstroNvim / Niri configs editable without a full rebuild |
-
-**Naming:**
-- Module files: lowercase, hyphen-separated (e.g., `zen-browser.nix`, `cpp-dev.nix`)
-- Scope labels in commits: lowercase, match the module or area (e.g., `home`, `system`, `gaming`, `font`)
-
----
 
 ## Decision Tables
 
@@ -126,7 +128,7 @@ configs/  (raw dotfiles, symlinked via xdg.configFile in home/default.nix)
 **Fix:** Edit the source files in `configs/niri/` or `configs/nvim/`, then rebuild.
 
 ### Wallpaper path relies on the /etc/nixos symlink
-**Root cause:** `noctalia.nix` hardcodes the wallpaper path as `/etc/nixos/home/wallpapers/...`. This works because `/etc/nixos` is a symlink to `/home/dnkyr/nixos-config`.
+**Root cause:** `noctalia.nix` hardcodes the wallpaper path as `/etc/nixos/home/wallpapers/Anime-Girl-Rain.png`. This works because `/etc/nixos` is a symlink to `/home/dnkyr/nixos-config`. Wallpaper images live in `home/wallpapers/`.
 **Symptom:** Wallpaper not found if the repo is ever moved or the symlink breaks.
 **Fix:** If the repo moves, update the path in `home/modules/noctalia.nix` and recreate the `/etc/nixos` symlink.
 
@@ -136,36 +138,3 @@ configs/  (raw dotfiles, symlinked via xdg.configFile in home/default.nix)
 **Fix:** This is expected behavior; rebuild while the partition is accessible.
 
 ---
-
-## Workflow
-
-**Setup (fresh clone):**
-```bash
-# Symlink repo to /etc/nixos (requires root)
-sudo ln -s /home/dnkyr/nixos-config /etc/nixos
-
-# Apply the configuration
-cd /home/dnkyr/nixos-config
-sudo nixos-rebuild switch
-```
-
-**Making changes:**
-1. Edit the relevant `.nix` file (see Architecture above for which layer)
-2. Test with `sudo nixos-rebuild test` (activates but doesn't set as boot default)
-3. If good, `sudo nixos-rebuild switch` (sets as default)
-4. For raw dotfiles (`configs/`), edit directly — no rebuild needed for most editors, but Niri requires a compositor reload
-
-**Commit conventions:**
-```
-ACTION(scope): short description
-```
-- `ACTION` ∈ `ADD`, `MODIFY`, `REMOVE`, `FIX`
-- `scope` = affected module/area in lowercase (e.g., `home`, `system`, `gaming`, `font`, `shell`, `niri`)
-- Examples: `ADD(home): install yazi file explorer`, `MODIFY(font): set system default sans`, `FIX(shell): correct zsh alias for lsd`
-
-**Flake input updates:**
-```bash
-nix flake update          # update all inputs
-nix flake update nixpkgs  # update a single input
-sudo nixos-rebuild switch # apply
-```
