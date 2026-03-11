@@ -55,6 +55,7 @@ in
     bat # cat replacement
     fastfetch
     lsd # new-gen ls
+    playerctl # MPRIS media player control (used by niri keybindings)
     yazi # Command line file explorer
 
     # Editors
@@ -84,6 +85,19 @@ in
     #Niri optional
     xwayland-satellite
   ];
+
+  # Forward Bluetooth AVRCP commands (headphone buttons) to MPRIS media players
+  systemd.user.services.mpris-proxy = {
+    Unit = {
+      Description = "Bluetooth MPRIS proxy";
+      After = [ "network.target" "sound.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 
   programs.direnv = {
     enable = true;
