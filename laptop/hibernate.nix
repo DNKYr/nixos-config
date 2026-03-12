@@ -16,7 +16,9 @@
   boot.kernelParams = [ "resume_offset=44204032" ];
 
   services.logind = {
-    lidSwitch = "hibernate";
-    lidSwitchExternalPower = "hibernate";
+    settings = {
+      Login.HandleLidSwitch = "hibernate";
+      Login.HandleLidSwitchExternalPower = "hibernate";
+    };
   };
 }
