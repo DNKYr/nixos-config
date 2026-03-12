@@ -62,6 +62,9 @@ in
     obsidian
     zed-editor
 
+    # Livestream
+    obs-studio
+
     # Utility
     unzip
     zip
@@ -90,7 +93,10 @@ in
   systemd.user.services.mpris-proxy = {
     Unit = {
       Description = "Bluetooth MPRIS proxy";
-      After = [ "network.target" "sound.target" ];
+      After = [
+        "network.target"
+        "sound.target"
+      ];
     };
     Service = {
       ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
