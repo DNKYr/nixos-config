@@ -4,5 +4,6 @@
   imports = [
     ./niri.nix
     ./fonts
+    ./gaming.nix
   ];
 }
