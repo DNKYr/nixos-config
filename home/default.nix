@@ -16,7 +16,6 @@ in
     ./modules/noctalia.nix
     ./modules/zen-browser.nix
     ./modules/claude.nix
-    ./modules/cpp-dev.nix
     ./modules/gaming.nix
   ];
   home.username = "dnkyr";
