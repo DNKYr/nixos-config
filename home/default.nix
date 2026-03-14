@@ -41,14 +41,6 @@ in
     # Communication
     telegram-desktop
 
-    # Command line tools
-    ani-cli # anime watcher
-    bat # cat replacement
-    fastfetch
-    lsd # new-gen ls
-    playerctl # MPRIS media player control (used by niri keybindings)
-    yazi # Command line file explorer
-
     # Editors
     obsidian
     zed-editor
