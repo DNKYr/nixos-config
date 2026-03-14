@@ -40,15 +40,6 @@ in
 
     # Communication
     telegram-desktop
-    # Code
-
-    #Javascript runtime
-    bun
-    pnpm
-
-    #Python
-    python314
-    uv
 
     # Command line tools
     ani-cli # anime watcher
