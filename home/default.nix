@@ -44,6 +44,9 @@ in
     obsidian
     zed-editor
 
+    # E-Reader
+    foliate
+
     # Livestream
     obs-studio
 
