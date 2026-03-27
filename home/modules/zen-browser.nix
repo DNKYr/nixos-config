@@ -44,6 +44,5 @@ in
       };
     };
 
-    suppressXdgMigrationWarning = true;
   };
 }
