@@ -41,6 +41,15 @@ in
 
       SearchEngines = {
         Default = "ddg";
+
+        Add = [
+          {
+            Name = "nixpkgs packages";
+            URLTemplate = "https://search.nixos.org/packages?query={searchTerms}";
+            IconURL = "https://wiki.nixos.org/favicon.ico";
+            Alias = "@np";
+          }
+        ];
       };
     };
 
