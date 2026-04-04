@@ -120,5 +120,9 @@ in
     enable = true;
   };
 
+  programs.jujutsu = {
+    enable = true;
+  };
+
   home.stateVersion = "25.11";
 }
