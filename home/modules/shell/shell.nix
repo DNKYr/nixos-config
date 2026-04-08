@@ -4,6 +4,7 @@
     ani-cli # anime watcher
     bat # cat replacement
     bash
+    bootdev-cli
     fastfetch
     eza # new-gen ls
     playerctl # MPRIS media player control (used by niri keybindings)
