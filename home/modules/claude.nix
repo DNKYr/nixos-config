@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    claude-code
+    # claude-code
     opencode
   ];
 
