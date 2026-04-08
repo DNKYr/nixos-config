@@ -45,9 +45,20 @@
         max_results = 200;
       };
     };
+    shellAliases = {
+      grep = "rg";
+      cat = "bat";
+      cd = "z";
+    };
+
   };
 
   programs.starship = {
+    enable = true;
+    enableNushellIntegration = true;
+  };
+
+  programs.zoxide = {
     enable = true;
     enableNushellIntegration = true;
   };
