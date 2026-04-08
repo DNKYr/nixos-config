@@ -34,6 +34,7 @@ in
   home.packages = with pkgs; [
 
     # Browser
+    chromium
     firefox
     tor-browser
 
