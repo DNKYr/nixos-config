@@ -22,4 +22,10 @@ in
   xdg.configFile."nvim".source = "${configs}/nvim/";
   xdg.configFile."niri".source = "${configs}/niri/";
 
+  home.file.".clang-format".text = ''
+    BasedOnStyle: LLVM
+    IndentWidth: 4
+    TabWidth: 4
+    UseTab: Never
+  '';
 }
