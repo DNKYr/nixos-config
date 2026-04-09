@@ -3,7 +3,15 @@
 
   inputs = {
     # Adding package source for nix packages
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+    };
+
+    import-tree = {
+      url = "github:vic/import-tree";
+    };
 
     home-manager = {
       # Make home-manager set to the master branch
@@ -31,46 +39,9 @@
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      home-manager,
-      quickshell,
-      noctalia,
-      ...
-    }:
-    {
-      nixosConfigurations = {
-        aether = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            # Import disk optimize file
-            ./optimizeStore.nix
-
-            # Import modules
-            ./modules
-            # Import virtual machine configuration
-            # ./vm/configuration.nix # Comment it out on Laptop
-
-            # Import laptop configuration
-            ./laptop/configuration.nix
-
-            # Add home-manager module
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                extraSpecialArgs = { inherit inputs; };
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.dnkyr = import ./home;
-                backupFileExtension = "backup";
-              };
-            }
-          ];
-        };
-      };
-    };
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
 }
