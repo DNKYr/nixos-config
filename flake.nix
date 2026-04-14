@@ -40,6 +40,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emtodo = {
+      url = "github:dnkyr/eisenhower-matrix-todo";
+    };
+
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

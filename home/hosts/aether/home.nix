@@ -28,4 +28,5 @@ in
     TabWidth: 4
     UseTab: Never
   '';
+  home.packages = [ inputs.emtodo.packages.x86_64-linux.default ];
 }
