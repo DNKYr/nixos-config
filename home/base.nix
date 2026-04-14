@@ -19,8 +19,9 @@
     obsidian
     zed-editor
 
-    # E-Reader
-    foliate
+    # Media Player
+    foliate # E-Book
+    vlc # Audio
 
     # Livestream
     obs-studio
