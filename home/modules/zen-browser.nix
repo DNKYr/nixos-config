@@ -23,6 +23,7 @@ let
     (extension "ublock-origin" "uBlock0@raymondhill.net")
     (extension "proton-pass" "78272b6fa58f4a1abaac99321d503a20@proton.me")
     (extension "ether-metamask" "webextension@metamask.io")
+    (extension "web-clipper-obsidian" "clipper@obsidian.md")
     # ...
   ];
 
