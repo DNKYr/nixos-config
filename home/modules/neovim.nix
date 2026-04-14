@@ -28,6 +28,9 @@
 
       # C++ LSP
       clang-tools
+
+      # Rust LSP
+      rust-analyzer
     ];
   };
 }
