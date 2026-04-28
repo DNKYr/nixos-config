@@ -15,6 +15,10 @@
       programs.gamescope.enable = true;
 
       # 32-bit graphics support required for Proton
-      hardware.graphics.enable32Bit = true;
+      hardware.graphics = {
+        enable = true;
+        enable32Bit = true;
+      };
+      services.auto-cpufreq.enable = true;
     };
 }
