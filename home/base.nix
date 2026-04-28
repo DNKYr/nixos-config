@@ -13,6 +13,7 @@
     tor-browser
 
     # Communication
+    discord
     telegram-desktop
 
     # Editors
