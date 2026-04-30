@@ -1,7 +1,6 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-
   programs.alacritty = {
 
     enable = true;
@@ -31,16 +30,6 @@
 
     settings = {
       shell = "${pkgs.zsh}/bin/zsh";
-    };
-  };
-
-  programs.zellij = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      default_shell = "${pkgs.nushell}/bin/nu";
-      theme = "tokyo-night";
-      show_startup_tips = false;
     };
   };
 }

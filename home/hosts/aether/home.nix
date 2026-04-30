@@ -9,12 +9,8 @@ in
 {
   imports = [
     ../../base.nix
-    ../../modules/neovim.nix
-    ../../modules/shell
-    ../../modules/noctalia.nix
-    ../../modules/zen-browser.nix
-    ../../modules/claude.nix
-    ../../modules/gaming.nix
+    ../../modules/gui
+    ../../modules/cli
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
