@@ -47,5 +47,8 @@
 
     #Niri optional
     xwayland-satellite
+
+    #VPN
+    clash-verge-rev
   ];
 }
