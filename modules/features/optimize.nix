@@ -5,7 +5,7 @@
     { lib, pkgs, ... }:
     {
       # Don't need this much configuration
-      boot.loader.grub.configurationLimit = 10;
+      boot.loader.grub.configurationLimit = 5;
 
       # Do garbage collection weekly to keep the storage low
       nix.gc = {
