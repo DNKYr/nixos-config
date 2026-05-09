@@ -10,7 +10,7 @@
     }:
     {
       imports = [
-        inputs.agenix.nixosModules.default
+        inputs.agenix.nixosModules.default # Secret Management
         self.nixosModules.ikuyo-hardware
         self.nixosModules.ikuyo-disko
         self.nixosModules.optimize
