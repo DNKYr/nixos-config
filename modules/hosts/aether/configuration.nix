@@ -82,6 +82,10 @@
       # Enable CUPS to print documents.
       services.printing.enable = true;
 
+      # UPower daemon — required by noctalia-shell's battery widget
+      # (Quickshell.Services.UPower) to detect BAT0.
+      services.upower.enable = true;
+
       # Enable sound with pipewire.
       services.pulseaudio.enable = false;
       security.rtkit.enable = true;
