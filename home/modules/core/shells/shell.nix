@@ -54,11 +54,6 @@
 
   };
 
-  programs.starship = {
-    enable = true;
-    enableNushellIntegration = true;
-  };
-
   programs.zoxide = {
     enable = true;
     enableNushellIntegration = true;

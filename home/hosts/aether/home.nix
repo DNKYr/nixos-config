@@ -11,6 +11,7 @@ in
     ../../base.nix
     ../../modules/gui
     ../../modules/cli
+    ../../modules/core
   ];
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
