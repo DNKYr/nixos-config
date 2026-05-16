@@ -13,7 +13,7 @@
 
   home.file.".cache/noctalia/wallpapers.json" = {
     text = builtins.toJSON {
-      defaultWallpaper = "/etc/nixos/home/wallpapers/Anime-Girl-Rain.png";
+      defaultWallpaper = "/etc/nixos/home/wallpapers/1387138.png";
     };
   };
 }
