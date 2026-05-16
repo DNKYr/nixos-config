@@ -32,6 +32,12 @@ window-rule {
     open-floating true
 }
 
+// Alacritty opens maximized so Mod+F toggle returns to the same size.
+window-rule {
+    match app-id="Alacritty"
+    open-maximized true
+}
+
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 

@@ -7,7 +7,6 @@
     settings = {
       window = {
         opacity = 0.93;
-        startup_mode = "Maximized";
         dynamic_title = true;
       };
 
