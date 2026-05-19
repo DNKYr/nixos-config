@@ -68,7 +68,10 @@
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ 22 ];
+        allowedTCPPorts = [
+          22
+          443 # xray VLESS+Reality direct
+        ];
       };
 
       system.stateVersion = "25.11";
