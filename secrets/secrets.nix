@@ -7,4 +7,12 @@ in
     aether
     ikuyo
   ];
+  "ikuyo-xray-config.age".publicKeys = [
+    aether
+    ikuyo
+  ];
+  "ikuyo-cloudflared-creds.age".publicKeys = [
+    aether
+    ikuyo
+  ];
 }

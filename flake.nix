@@ -59,6 +59,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Private values (tunnel IDs, hostnames, anything you don't want in public git history).
+    # Cloning the public repo without SSH access to this input will fail eval — that's intentional.
+    secrets = {
+      url = "git+ssh://git@github.com/DNKYr/nixos-config-secrets";
+      flake = true;
+    };
+
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

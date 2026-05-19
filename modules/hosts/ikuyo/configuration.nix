@@ -14,9 +14,13 @@
         self.nixosModules.ikuyo-hardware
         self.nixosModules.ikuyo-disko
         self.nixosModules.optimize
+        self.nixosModules.ikuyo-xray
+        self.nixosModules.ikuyo-cloudflared
       ];
 
       age.secrets.dnkyr-password.file = ../../../secrets/ikuyo-dnkyr-password.age;
+      age.secrets.ikuyo-xray-config.file = ../../../secrets/ikuyo-xray-config.age;
+      age.secrets.ikuyo-cloudflared-creds.file = ../../../secrets/ikuyo-cloudflared-creds.age;
       environment.systemPackages = with pkgs; [
         git
         vim

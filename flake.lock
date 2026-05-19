@@ -550,7 +550,23 @@
         "nixpkgs": "nixpkgs_2",
         "noctalia": "noctalia",
         "quickshell": "quickshell",
+        "secrets": "secrets",
         "zen-browser": "zen-browser"
+      }
+    },
+    "secrets": {
+      "locked": {
+        "lastModified": 1779158328,
+        "narHash": "sha256-X/wzrnsIDTK2evuWHi2z38C27XqPfEqlqXQKq7oGdCM=",
+        "ref": "refs/heads/main",
+        "rev": "3e4461cb7327fdd6770364b774297055849a0bd8",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/DNKYr/nixos-config-secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/DNKYr/nixos-config-secrets"
       }
     },
     "systems": {
