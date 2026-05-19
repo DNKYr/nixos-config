@@ -8,7 +8,8 @@
       imports = [
         # Include the results of the hardware scan
         self.nixosModules.aether-hardware
-        self.nixosModules.aether-hibernate
+        # Disable hibernate
+        # self.nixosModules.aether-hibernate
         self.nixosModules.niri
         self.nixosModules.font
         self.nixosModules.fcitx5
