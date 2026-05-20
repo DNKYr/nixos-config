@@ -15,6 +15,7 @@
         self.nixosModules.fcitx5
         self.nixosModules.gaming
         self.nixosModules.optimize
+        self.nixosModules.aether-ucla-vpn
 
       ];
 
