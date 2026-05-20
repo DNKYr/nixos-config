@@ -15,22 +15,5 @@
     enable = true;
     vimAlias = true;
     defaultEditor = true;
-    extraPackages = with pkgs; [
-      # Nix LSP
-      nil
-      nixpkgs-fmt
-
-      # Lua LSp
-      lua-language-server
-
-      # Python LSP
-      pyright
-
-      # C++ LSP
-      clang-tools
-
-      # Rust LSP
-      rust-analyzer
-    ];
   };
 }
