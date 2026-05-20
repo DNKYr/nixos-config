@@ -17,6 +17,9 @@
         gnutar
         gnused
 
+        # System Monitoring
+        btop
+
         # Network Tools
         curl
         wget
