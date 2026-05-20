@@ -11,6 +11,7 @@
     {
       imports = [
         inputs.agenix.nixosModules.default # Secret Management
+        self.nixosModules.base
         self.nixosModules.ikuyo-hardware
         self.nixosModules.ikuyo-disko
         self.nixosModules.optimize
@@ -21,10 +22,6 @@
       age.secrets.dnkyr-password.file = ../../../secrets/ikuyo-dnkyr-password.age;
       age.secrets.ikuyo-xray-config.file = ../../../secrets/ikuyo-xray-config.age;
       age.secrets.ikuyo-cloudflared-creds.file = ../../../secrets/ikuyo-cloudflared-creds.age;
-      environment.systemPackages = with pkgs; [
-        git
-        vim
-      ];
 
       boot.loader.grub = {
         enable = true;

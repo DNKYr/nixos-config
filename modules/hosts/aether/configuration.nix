@@ -10,6 +10,7 @@
         self.nixosModules.aether-hardware
         # Disable hibernate
         # self.nixosModules.aether-hibernate
+        self.nixosModules.base
         self.nixosModules.niri
         self.nixosModules.font
         self.nixosModules.fcitx5
@@ -118,12 +119,6 @@
       nix.settings.experimental-features = [
         "nix-command"
         "flakes"
-      ];
-
-      environment.systemPackages = with pkgs; [
-        vim
-        wget
-        git
       ];
 
       virtualisation.docker.enable = false;
