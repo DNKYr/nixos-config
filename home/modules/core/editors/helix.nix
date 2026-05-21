@@ -5,14 +5,22 @@
     languages = {
       language-server = {
         nil.command = "nil";
+        pyright = {
+          command = "pyright-langserver";
+          args = [ "--stdio" ];
+        };
       };
 
       languages = [
         {
           name = "nix";
           auto-format = true;
-          language-server = [ "nil" ];
+          language-servers = [ "nil" ];
           formatter.command = "nixfmt";
+        }
+        {
+          name = "python";
+          language-servers = [ "pyright" ];
         }
       ];
     };
@@ -33,6 +41,12 @@
         # Completion
         auto-format = true;
         preview-completion-insert = true;
+
+        # LSP
+        lsp = {
+          display-inlay-hints = true;
+          display-messages = true;
+        };
 
         # status line layout
         statusline = {
