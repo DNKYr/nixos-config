@@ -1,6 +1,6 @@
 { ... }:
 {
   imports = [
-    ./claude.nix
+    ./coding-agent.nix
   ];
 }
