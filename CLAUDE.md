@@ -10,8 +10,10 @@
 |------|---------|
 | Rebuild & switch (current host) | `sudo nixos-rebuild switch --flake .` (from `/home/dnkyr/nixos-config`) |
 | Rebuild a specific host | `sudo nixos-rebuild switch --flake .#aether` (or `.#ikuyo`) |
-| Rebuild all hosts (local + remote) | `./scripts/rebuild-switch.nu` — iterates aether (local) and ikuyo (over SSH via `--target-host dnkyr@ikuyo`) |
-| Rebuild one host via the script | `./scripts/rebuild-switch.nu aether` or `./scripts/rebuild-switch.nu ikuyo` |
+| Rebuild via just (aether) | `just aether` |
+| Rebuild via just (ikuyo) | `just ikuyo` (remote, uses `--target-host ikuyo --sudo --ask-sudo-password`) |
+| Update flake inputs via just | `just up` |
+| List all just recipes | `just` or `just --list` |
 | Test without switching | `sudo nixos-rebuild test --flake .` |
 | Build without activating | `sudo nixos-rebuild build --flake .` |
 | Update flake inputs | `nix flake update` |
@@ -42,7 +44,7 @@ A Nix flakes-based NixOS configuration for two hosts:
 
 The flake is assembled with [`flake-parts`](https://flake.parts) and [`import-tree`](https://github.com/vic/import-tree): every `.nix` file under `./modules/` is auto-discovered and merged into the flake. Each system-level module declares itself as `flake.nixosModules.<name>`; each host's `configuration.nix` then composes the desired modules via `self.nixosModules.<name>`. User environment (packages, dotfiles, shell) is layered on top via home-manager (`home/`), kept out of the auto-import tree and pulled in explicitly from the host config — currently only `aether` wires home-manager. External programs without nixpkgs packages are pulled in via flake inputs (noctalia shell, zen-browser, nix-gaming, emtodo). Remote provisioning uses `nixos-anywhere` + `disko`; secrets are encrypted at rest with `agenix`; non-secret-but-private values (tunnel IDs, hostnames) live in a separate private flake input (`inputs.secrets`).
 
-**Stack:** Nix flakes, flake-parts, import-tree, NixOS unstable, home-manager, disko, nixos-anywhere, agenix, Niri (Wayland) + SDDM, Zsh + Nushell + Starship, Zellij, Alacritty, Neovim (AstroNvim) + Helix, btop, Jujutsu + Git/gh, fcitx5 (mozc + Chinese addons), Pipewire, Bluetooth, Steam + Gamescope + Gamemode, auto-cpufreq, `clash-verge-rev` (VPN client), OpenSSH + `cloudflared` + `xray` (ikuyo).
+**Stack:** Nix flakes, flake-parts, import-tree, NixOS unstable, home-manager, disko, nixos-anywhere, agenix, Niri (Wayland) + SDDM, Zsh + Nushell + Starship, Zellij, Alacritty, Neovim (AstroNvim) + Helix, btop, Jujutsu + Git/gh, fcitx5 (mozc + Chinese addons), Pipewire, Bluetooth, Steam + Gamescope + Gamemode, auto-cpufreq, `clash-verge-rev` (VPN client), openconnect (UCLA VPN on aether), OpenSSH + `cloudflared` + `xray` (ikuyo). Task runner: `just`.
 **Entry point:** `flake.nix` → `flake-parts.lib.mkFlake` → `import-tree ./modules` → `nixosConfigurations.{aether,ikuyo}`.
 
 ---
@@ -59,6 +61,9 @@ flake.nix
     │
 modules/                                  ← every .nix here is auto-imported by import-tree
     ├── features/                         (reusable NixOS modules; each defines flake.nixosModules.<name>)
+    │     ├── base/default.nix            (flake.nixosModules.base: core system packages — neovim, just,
+    │     │                                gnumake, git, gnugrep, gawk, gnutar, gnused, btop, curl,
+    │     │                                wget, openssl; imported by both aether and ikuyo)
     │     ├── niri.nix                    (Niri Wayland + SDDM session)
     │     ├── font.nix                    (system fonts + fontconfig defaults)
     │     ├── fcitx5.nix                  (fcitx5 IME: mozc + Chinese addons)
@@ -69,15 +74,19 @@ modules/                                  ← every .nix here is auto-imported b
           │     ├── default.nix           (flake.nixosConfigurations.aether,
           │     │                          wires home-manager with extraSpecialArgs = { inputs; })
           │     ├── configuration.nix     (flake.nixosModules.aether-config:
-          │     │                          imports feature modules + boot/network/users/audio/bluetooth;
+          │     │                          imports base + feature modules + aether-ucla-vpn +
+          │     │                          boot/network/users/audio/bluetooth;
           │     │                          aether-hibernate is currently commented out)
           │     ├── hardware.nix          (flake.nixosModules.aether-hardware — AUTO-GENERATED, never edit)
-          │     └── hibernate.nix         (flake.nixosModules.aether-hibernate — swapfile + resume offset
-          │                                + lid → hibernate; opt-in via configuration.nix imports)
+          │     ├── hibernate.nix         (flake.nixosModules.aether-hibernate — swapfile + resume offset
+          │     │                          + lid → hibernate; opt-in via configuration.nix imports)
+          │     └── ucla-vpn.nix          (flake.nixosModules.aether-ucla-vpn — openconnect wrapper
+          │                                for UCLA AnyConnect VPN with SAML external-browser auth)
           └── ikuyo/                      (Hetzner VPS, headless)
                 ├── default.nix           (flake.nixosConfigurations.ikuyo — no home-manager)
                 ├── configuration.nix     (flake.nixosModules.ikuyo-config:
-                │                          imports hardware + disko + optimize + xray + cloudflared + agenix;
+                │                          imports base + hardware + disko + optimize + xray +
+                │                          cloudflared + agenix;
                 │                          GRUB BIOS, OpenSSH key-only, sudo-with-password,
                 │                          firewall TCP {22, 443}, dnkyr user with hashedPasswordFile)
                 ├── disko.nix             (flake.nixosModules.ikuyo-disko: GPT, EF02 boot + ext4 root on /dev/sda)
@@ -106,18 +115,22 @@ home/                                     ← NOT auto-imported; referenced expl
           │     ├── btop.nix              (programs.btop)
           │     ├── starship.nix          (starship + nushell integration)
           │     ├── editors/
-          │     │     ├── default.nix     (imports helix + neovim)
+          │     │     ├── default.nix     (imports helix + neovim; shared LSPs & formatters:
+          │     │                          nil, nixpkgs-fmt, lua-language-server, pyright,
+          │     │                          clang-tools, rust-analyzer)
           │     │     ├── helix.nix       (programs.helix)
-          │     │     └── neovim.nix      (neovim + LSPs: nil, lua-ls, pyright, clang-tools, rust-analyzer
-          │     │                          + helpers: ripgrep, lazygit, gdu, bottom, nodejs)
+          │     │     └── neovim.nix      (programs.neovim + helpers: ripgrep, lazygit, gdu, bottom, nodejs;
+          │     │                          no LSPs — those live in editors/default.nix as shared packages)
           │     ├── shells/
           │     │     ├── default.nix     (imports shell.nix)
-          │     │     └── shell.nix       (zsh + oh-my-zsh, nushell, zoxide; CLI tools: bat, eza, yazi…)
+          │     │     └── shell.nix       (zsh + oh-my-zsh, nushell, zoxide; CLI tools: ani-cli, bat,
+          │     │                          bash, bootdev-cli, eza, fastfetch, playerctl, yazi;
+          │     │                          aliases use lsd despite installing eza)
           │     └── zellij/
           │           └── default.nix     (zellij — terminal multiplexer, nu as default_shell)
-          ├── cli/                        (terminal-only, but separated from `core` — currently AI tools)
-          │     ├── default.nix           (imports claude.nix)
-          │     └── claude.nix            (claude-code, opencode)
+          ├── cli/                        (terminal-only, but separated from `core` — coding agent tools)
+          │     ├── default.nix           (imports coding-agent.nix)
+          │     └── coding-agent.nix      (claude-code, opencode, pi-coding-agent)
           └── gui/                        (graphical apps; only safe with a display server)
                 ├── default.nix           (imports gaming/noctalia/zen-browser/terminal + GUI app pkgs:
                 │                          chromium, firefox, tor-browser, discord, telegram-desktop,
@@ -132,9 +145,9 @@ configs/                                  (raw dotfiles, symlinked via xdg.confi
     ├── niri/config.kdl
     └── nvim/                             (AstroNvim lua config)
 
-scripts/
-    └── rebuild-switch.nu                 (nushell helper: rebuilds all hosts or a named host; uses
-                                           --target-host dnkyr@ikuyo for the remote, --ask-sudo-password)
+justfile                                  (task runner via `just`; recipes: up (flake update),
+                                           aether (local rebuild), ikuyo (remote rebuild);
+                                           shell set to nushell)
 ```
 
 **Key invariants:**
@@ -197,7 +210,7 @@ scripts/
 | 4. (Optional) Add disko config | `modules/hosts/<host>/disko.nix` declaring `flake.nixosModules.<host>-disko` (used by nixos-anywhere) |
 | 5. (Optional) Wire home-manager | In `default.nix`, add `inputs.home-manager.nixosModules.home-manager` + `home-manager.users.<user> = import ../../../home/hosts/<host>/home.nix;` |
 | 6. Add the host's SSH pubkey to `secrets/secrets.nix` | Required if the host needs to decrypt any agenix secret |
-| 7. (Optional) Add the host to `scripts/rebuild-switch.nu`'s `$hosts` list | Lets the script include it in `rebuild-switch.nu` (no-arg) all-hosts runs |
+| 7. (Optional) Add a `just` recipe for the new host | Add a recipe in `justfile` following the `aether`/`ikuyo` pattern |
 
 ---
 
@@ -207,6 +220,11 @@ scripts/
 **Root cause:** Home modules auto-receive `config`, `pkgs`, `lib`, etc., but `inputs` is only available because the host wires `home-manager.extraSpecialArgs = { inherit inputs; }` in `modules/hosts/aether/default.nix`. You still have to destructure it.
 **Symptom:** `error: attribute 'inputs' missing` at eval time.
 **Fix:** Add `inputs` to the module's function args: `{ pkgs, inputs, ... }:`. See `home/modules/gui/gaming.nix`, `noctalia.nix`, `zen-browser.nix`, and `home/hosts/aether/home.nix` for examples.
+
+### Editor LSPs are shared in `editors/default.nix`, not per-editor
+**Root cause:** LSPs and formatters (nil, nixpkgs-fmt, lua-language-server, pyright, clang-tools, rust-analyzer) live in `home/modules/core/editors/default.nix` as shared `home.packages` consumed by both helix and neovim. They are NOT in `neovim.nix` itself or managed by AstroNvim.
+**Symptom:** Adding an LSP to `neovim.nix` works but duplicates it; removing one from AstroNvim config doesn't remove it from the system because it's installed via the shared Nix list.
+**Fix:** When adding or removing an LSP/formatter that both editors should share, edit `home/modules/core/editors/default.nix`. If it's editor-specific, add it to the individual editor file instead.
 
 ### Wrong outer args in a feature module (flake-parts vs NixOS)
 **Root cause:** Feature modules under `modules/features/` and host modules under `modules/hosts/<host>/` are flake-parts modules, not NixOS modules. The outer function receives flake-parts args (`{ self, inputs, ... }`) and must declare `flake.nixosModules.<name> = { ...NixOS args... }: { ... };`. Trying to put NixOS options at the top level (or destructuring `pkgs` in the outer args) won't work.
@@ -256,4 +274,4 @@ scripts/
 ### nixos-anywhere wipes the disk per `disko.nix`
 **Root cause:** `nixos-anywhere --flake .#ikuyo` runs the `ikuyo-disko` module, which formats `/dev/sda` end-to-end (GPT, EF02 boot, ext4 root). This is the intended bootstrap flow for a fresh VPS but is destructive on any existing data.
 **Symptom:** All data on the target host is gone after a single command.
-**Fix:** Only run `nixos-anywhere` against a host you actually intend to wipe. For routine updates of an already-installed `ikuyo`, use `sudo nixos-rebuild switch --flake .#ikuyo --target-host root@<ip>` (or `./scripts/rebuild-switch.nu ikuyo`) instead — that respects the existing filesystem.
+**Fix:** Only run `nixos-anywhere` against a host you actually intend to wipe. For routine updates of an already-installed `ikuyo`, use `just ikuyo` (or `sudo nixos-rebuild switch --flake .#ikuyo --target-host root@<ip>`) instead — that respects the existing filesystem.
