@@ -2,6 +2,7 @@
 {
   programs.helix = {
     enable = true;
+    defaultEditor = true;
     languages = {
       language-server = {
         nil.command = "nil";
@@ -11,7 +12,7 @@
         };
       };
 
-      languages = [
+      language = [
         {
           name = "nix";
           auto-format = true;
@@ -25,7 +26,15 @@
       ];
     };
 
+    themes = {
+      rose_pine_transparent = {
+        inherits = "rose_pine";
+        "ui.background" = { };
+      };
+    };
+
     settings = {
+      theme = "rose_pine";
       editor = {
         line-number = "relative";
         cursorline = true;
@@ -39,6 +48,8 @@
         };
 
         # Completion
+        auto-completion = true;
+        path-completion = true;
         auto-format = true;
         preview-completion-insert = true;
 
@@ -81,6 +92,14 @@
             insert = "INS";
             select = "SEL";
           };
+        };
+
+        true-color = true;
+
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
         };
       };
     };
