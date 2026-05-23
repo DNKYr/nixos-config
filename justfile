@@ -10,6 +10,12 @@ default:
 up:
     nix flake update
 
+# Check the package
+[group('build')]
+check:
+    nixos-rebuild build --flake .#aether
+    nixos-rebuild build --flake .#ikuyo
+
 # Rebuild aether
 [group('build')]
 aether: 

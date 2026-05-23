@@ -12,6 +12,7 @@
 | Rebuild a specific host | `sudo nixos-rebuild switch --flake .#aether` (or `.#ikuyo`) |
 | Rebuild via just (aether) | `just aether` |
 | Rebuild via just (ikuyo) | `just ikuyo` (remote, uses `--target-host ikuyo --sudo --ask-sudo-password`) |
+| Build both hosts without activating | `just check` (verify flake after `just up`) |
 | Update flake inputs via just | `just up` |
 | List all just recipes | `just` or `just --list` |
 | Test without switching | `sudo nixos-rebuild test --flake .` |
