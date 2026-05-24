@@ -13,9 +13,9 @@ up:
 # Check the package
 [group('build')]
 check:
-    nixos-rebuild build --flake .#aether
-    nixos-rebuild build --flake .#ikuyo
-
+    nixos-rebuild build --flake .#aether --no-link
+    nixos-rebuild build --flake .#ikuyo --no-link
+    
 # Rebuild aether
 [group('build')]
 aether: 
