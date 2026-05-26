@@ -5,6 +5,7 @@
     ./noctalia.nix
     ./zen-browser.nix
     ./terminal.nix
+    ./android.nix
   ];
 
   home.packages = with pkgs; [
