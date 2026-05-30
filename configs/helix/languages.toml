@@ -1,0 +1,18 @@
+[[language]]
+auto-format = true
+language-servers = ["nil"]
+name = "nix"
+
+[language.formatter]
+command = "nixfmt"
+
+[[language]]
+language-servers = ["pyright"]
+name = "python"
+
+[language-server.nil]
+command = "nil"
+
+[language-server.pyright]
+args = ["--stdio"]
+command = "pyright-langserver"

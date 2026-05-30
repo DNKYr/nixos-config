@@ -1,8 +1,15 @@
-{ pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 let
 
+  configPath = "${config.home.homeDirectory}/nixos-config/configs";
   configs = ../../../configs;
+  hxPath = "${configPath}/helix";
 
 in
 
@@ -18,6 +25,7 @@ in
 
   xdg.configFile."nvim".source = "${configs}/nvim/";
   xdg.configFile."niri".source = "${configs}/niri/";
+  xdg.configFile."helix".source = config.lib.file.mkOutOfStoreSymlink hxPath;
 
   home.file.".clang-format".text = ''
     BasedOnStyle: LLVM

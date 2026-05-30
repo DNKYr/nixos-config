@@ -1,0 +1,44 @@
+theme = "rose_pine"
+
+[editor]
+auto-completion = true
+auto-format = true
+color-modes = true
+cursorline = true
+default-yank-register = "+"
+line-number = "relative"
+path-completion = true
+preview-completion-insert = true
+true-color = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.lsp]
+display-inlay-hints = true
+display-messages = true
+
+[editor.soft-wrap]
+enable = true
+
+[editor.statusline]
+center = []
+diagnostics = ["error", "warning", "info"]
+left = [
+    "mode",
+    "spinner",
+    "version-control",
+    "file-name",
+    "read-only-indicator",
+    "file-modification-indicator",
+]
+right = ["workspace-diagnostics", "diagnostics", "position", "position-percentage", "file-type"]
+separator = "|"
+workspace-diagnostics = ["error", "warning"]
+
+[editor.statusline.mode]
+insert = "INS"
+normal = "NOR"
+select = "SEL"
