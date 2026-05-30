@@ -8,8 +8,9 @@
 let
 
   configPath = "${config.home.homeDirectory}/nixos-config/configs";
-  configs = ../../../configs;
+  nvimPath = "${configPath}/nvim";
   hxPath = "${configPath}/helix";
+  niriPath = "${configPath}/niri";
 
 in
 
@@ -23,8 +24,8 @@ in
   home.username = "dnkyr";
   home.homeDirectory = "/home/dnkyr";
 
-  xdg.configFile."nvim".source = "${configs}/nvim/";
-  xdg.configFile."niri".source = "${configs}/niri/";
+  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink nvimPath;
+  xdg.configFile."niri".source = config.lib.file.mkOutOfStoreSymlink niriPath;
   xdg.configFile."helix".source = config.lib.file.mkOutOfStoreSymlink hxPath;
 
   home.file.".clang-format".text = ''
