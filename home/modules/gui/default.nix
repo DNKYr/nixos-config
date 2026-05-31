@@ -23,6 +23,9 @@
     obsidian
     zed-editor
 
+    # File Transfer
+    localsend
+
     # Media Player
     foliate # E-Book
     vlc # Audio

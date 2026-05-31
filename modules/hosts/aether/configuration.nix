@@ -39,6 +39,8 @@
       };
 
       networking.hostName = "aether"; # Define your hostname.
+      networking.firewall.allowedTCPPorts = [ 53317 ];
+      networking.firewall.allowedUDPPorts = [ 53317 ];
 
       # Enable networking
       networking.networkmanager.enable = true;
