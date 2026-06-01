@@ -16,3 +16,6 @@ command = "nil"
 [language-server.pyright]
 args = ["--stdio"]
 command = "pyright-langserver"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
