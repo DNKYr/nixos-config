@@ -1,0 +1,17 @@
+// WezTerm initial-configure workaround (upstream-recommended).
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+// Firefox picture-in-picture floats by default.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Alacritty opens maximized so Mod+F toggle returns to the same size.
+window-rule {
+    match app-id="Alacritty"
+    open-maximized true
+}
