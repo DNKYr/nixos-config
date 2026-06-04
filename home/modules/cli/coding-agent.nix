@@ -5,6 +5,7 @@
     claude-code
     opencode
     pi-coding-agent
+    codex
   ];
 
 }
