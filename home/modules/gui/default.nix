@@ -6,6 +6,7 @@
     ./zen-browser.nix
     ./terminal.nix
     ./android.nix
+    ./spotify.nix
   ];
 
   home.packages = with pkgs; [
