@@ -25,7 +25,10 @@
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
+      # Pinned to the last v4 revision. v5.0.0 is a major redesign that breaks
+      # the CLI (`ipc call` -> `msg`), wallpaper model, and theming. Bump
+      # deliberately (and migrate configs) rather than via `just up`.
+      url = "github:noctalia-dev/noctalia-shell/fe6fa125f5ee7881c4ee0cf9c0a4329a8238d3c2";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.quickshell.follows = "quickshell";
     };
