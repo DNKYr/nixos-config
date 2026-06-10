@@ -15,4 +15,12 @@ in
     aether
     ikuyo
   ];
+  "ikuyo-dclaw-config.age".publicKeys = [
+    aether
+    ikuyo
+  ];
+  "ikuyo-ghcr-token.age".publicKeys = [
+    aether
+    ikuyo
+  ];
 }

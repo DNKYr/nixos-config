@@ -17,11 +17,18 @@
         self.nixosModules.optimize
         self.nixosModules.ikuyo-xray
         self.nixosModules.ikuyo-cloudflared
+        self.nixosModules.ikuyo-dclaw
       ];
 
       age.secrets.dnkyr-password.file = ../../../secrets/ikuyo-dnkyr-password.age;
       age.secrets.ikuyo-xray-config.file = ../../../secrets/ikuyo-xray-config.age;
       age.secrets.ikuyo-cloudflared-creds.file = ../../../secrets/ikuyo-cloudflared-creds.age;
+      age.secrets.ikuyo-dclaw-config = {
+        file = ../../../secrets/ikuyo-dclaw-config.age;
+        owner = "dnkyr"; # readable by the container's UID-1000 nanobot user
+        mode = "0400";
+      };
+      age.secrets.ikuyo-ghcr-token.file = ../../../secrets/ikuyo-ghcr-token.age;
 
       boot.loader.grub = {
         enable = true;
