@@ -12,6 +12,6 @@
     lua-language-server
     pyright
     clang-tools
-    rust-analyzer
+    (lib.hiPrio pkgs.rust-analyzer)
   ];
 }
