@@ -15,6 +15,7 @@
         self.nixosModules.font
         self.nixosModules.fcitx5
         self.nixosModules.gaming
+        self.nixosModules.mirror
         self.nixosModules.optimize
         self.nixosModules.aether-ucla-vpn
 
@@ -46,7 +47,7 @@
       networking.networkmanager.enable = true;
 
       # Set your time zone.
-      time.timeZone = "America/Los_Angeles";
+      time.timeZone = "Asia/Hong_Kong";
 
       # Enable NTP time synchronization
       services.timesyncd.enable = true;

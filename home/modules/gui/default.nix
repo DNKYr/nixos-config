@@ -17,7 +17,7 @@
     tor-browser
 
     # Communication
-    discord
+    # discord
     telegram-desktop
 
     # Editors
