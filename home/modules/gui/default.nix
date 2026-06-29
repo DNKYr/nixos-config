@@ -23,6 +23,7 @@
     # Editors
     obsidian
     zed-editor
+    libreoffice
 
     # File Transfer
     localsend
