@@ -20,6 +20,7 @@
     python3Packages.mypy
     python3Packages.black
     python3Packages.isort
+    python3Packages.pytest
     poetry
     python3Packages.uv
     pipenv
