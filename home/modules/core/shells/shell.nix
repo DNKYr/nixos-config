@@ -21,7 +21,13 @@
     oh-my-zsh = {
       enable = true;
       plugins = [
+        "zoxide"
         "git"
+        "sudo"
+        "docker"
+        "systemd"
+        "colored-man-pages"
+        "command-not-found"
       ];
     };
 
