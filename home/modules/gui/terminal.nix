@@ -12,7 +12,7 @@
 
       terminal = {
         shell = {
-          program = "${pkgs.zsh}/bin/zsh";
+          program = "${pkgs.zellij}/bin/zellij";
         };
       };
 

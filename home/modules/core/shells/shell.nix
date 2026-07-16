@@ -6,6 +6,7 @@
     bash
     bootdev-cli
     fastfetch
+    lsd
     eza # new-gen ls
     playerctl # MPRIS media player control (used by niri keybindings)
     yazi # Command line file explorer
@@ -57,5 +58,6 @@
   programs.zoxide = {
     enable = true;
     enableNushellIntegration = true;
+    enableZshIntegration = true;
   };
 }
