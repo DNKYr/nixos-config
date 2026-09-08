@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = { "BufWritePre" },
+    event = { "BufWritePre", "BufReadPost", "BufNewFile" },
     opts = {
       formatters_by_ft = {
         nix = { "nixpkgs_fmt" },
