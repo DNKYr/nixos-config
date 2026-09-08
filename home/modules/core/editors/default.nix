@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./helix.nix
@@ -12,6 +12,7 @@
     lua-language-server
     pyright
     clang-tools
+    stylua
     (lib.hiPrio pkgs.rust-analyzer)
   ];
 }

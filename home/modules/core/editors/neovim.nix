@@ -10,5 +10,8 @@
     bottom
     nodejs
 
+    # nvim-treesitter (main branch) build dependency
+    tree-sitter
+
   ];
 }
