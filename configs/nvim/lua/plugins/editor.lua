@@ -2,6 +2,7 @@ return {
   -- Treesitter: main branch (rewrite). Parsers install at runtime via :TSUpdate.
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
     lazy = false,
     config = function()
