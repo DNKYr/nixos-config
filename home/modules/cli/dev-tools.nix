@@ -60,5 +60,7 @@
     yarn
     biome
 
+    # database
+    sqlite
   ];
 }
