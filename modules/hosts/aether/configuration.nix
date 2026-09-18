@@ -15,7 +15,6 @@
         self.nixosModules.font
         self.nixosModules.fcitx5
         self.nixosModules.gaming
-        self.nixosModules.mirror
         self.nixosModules.optimize
         self.nixosModules.aether-ucla-vpn
 
