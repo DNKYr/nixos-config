@@ -10,11 +10,7 @@
         dynamic_title = true;
       };
 
-      terminal = {
-        shell = {
-          program = "${pkgs.zellij}/bin/zellij";
-        };
-      };
+      terminal.shell = "zsh";
 
       font = {
         normal = {
