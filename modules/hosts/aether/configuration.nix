@@ -41,9 +41,19 @@
       networking.hostName = "aether"; # Define your hostname.
       networking.firewall.allowedTCPPorts = [ 53317 ];
       networking.firewall.allowedUDPPorts = [ 53317 ];
+      # Allow SSH only over the Tailscale interface
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 22 ];
 
       # Enable networking
       networking.networkmanager.enable = true;
+
+      # Enable Tailscale
+      services.tailscale.enable = true;
+      # Don't let Tailscale's MagicDNS override the system DNS (breaks UCLA VPN)
+      services.tailscale.extraSetFlags = [ "--accept-dns=false" ];
+
+      # Enable OpenSSH daemon
+      services.openssh.enable = true;
 
       # Set your time zone.
       time.timeZone = "Asia/Hong_Kong";
