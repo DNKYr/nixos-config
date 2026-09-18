@@ -61,6 +61,9 @@
       # Enable NTP time synchronization
       services.timesyncd.enable = true;
 
+      # Enable udisks2 to mount usb
+      services.udisks2.enable = true;
+
       # Select internationalisation properties.
       i18n.defaultLocale = "en_US.UTF-8";
 
