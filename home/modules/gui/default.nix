@@ -19,6 +19,7 @@
     # Communication
     discord
     telegram-desktop
+    qq
 
     # Editors
     obsidian
