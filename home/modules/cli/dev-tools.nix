@@ -13,7 +13,7 @@
     sccache
     bacon
 
-    python3
+    python312
     python3Packages.ruff
     basedpyright
     python3Packages.pylint
@@ -62,5 +62,6 @@
 
     # database
     sqlite
+    sqlitebrowser
   ];
 }
