@@ -2,6 +2,7 @@
 {
   imports = [
     ./gaming.nix
+    ./mime.nix
     ./noctalia.nix
     ./zen-browser.nix
     ./terminal.nix
