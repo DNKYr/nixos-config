@@ -7,6 +7,7 @@
     ./terminal.nix
     ./android.nix
     ./spotify.nix
+    ./claude-desktop.nix
   ];
 
   home.packages = with pkgs; [

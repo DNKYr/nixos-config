@@ -46,6 +46,11 @@
       url = "github:dnkyr/eisenhower-matrix-todo";
     };
 
+    claude-desktop = {
+      url = "github:briossant/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
