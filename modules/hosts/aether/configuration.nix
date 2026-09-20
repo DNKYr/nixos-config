@@ -55,6 +55,9 @@
       # Enable OpenSSH daemon
       services.openssh.enable = true;
 
+      # Support uv venv install
+      programs.nix-ld.enable = true;
+
       # Set your time zone.
       time.timeZone = "Asia/Hong_Kong";
 
@@ -137,7 +140,7 @@
         "flakes"
       ];
 
-      virtualisation.docker.enable = false;
+      virtualisation.docker.enable = true;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
