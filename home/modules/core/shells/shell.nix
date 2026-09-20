@@ -1,4 +1,27 @@
 { config, pkgs, ... }:
+let
+  # On-demand autoclicker. `theclicker` itself is installed in
+  # home/modules/gui/default.nix; it reads raw evdev and emits clicks through a
+  # virtual /dev/uinput device, which is why it works under Niri. Requires the
+  # `input` group (granted in modules/hosts/aether/configuration.nix).
+  #
+  # by-id/by-path are used instead of /dev/input/eventN, since event numbering
+  # shifts whenever a device is replugged.
+  #
+  # -l 274 binds BTN_MIDDLE to "toggle left-autoclick". `-d` only selects which
+  # device is *watched* for that bind -- the clicks themselves always come out
+  # of the separate virtual device, so the watched device need not be the mouse
+  # being clicked with. Hence the trackpoint variant below: it leaves a
+  # two-button mouse entirely untouched. Ctrl-C to stop.
+  clickerFlags = "-l 274 -c 25 -j 3";
+
+  # Wheel-click on the wireless mouse. Preferred -- hand stays on the mouse.
+  clickerCmd = "theclicker run -d /dev/input/by-id/usb-Telink_Wireless_Receiver-event-mouse ${clickerFlags}";
+
+  # Fallback for a mouse whose wheel does not press: the ThinkPad middle button
+  # between the trackpoint buttons, which is a real BTN_MIDDLE.
+  clickerTpCmd = "theclicker run -d /dev/input/by-path/platform-i8042-serio-1-event-mouse ${clickerFlags}";
+in
 {
   home.packages = with pkgs; [
     ani-cli # anime watcher
@@ -40,6 +63,9 @@
       l = "lsd -l";
 
       tree = "lsd --tree --group-dirs first --depth=2 2>/dev/null";
+
+      clicker = clickerCmd;
+      clicker-tp = clickerTpCmd;
     };
   };
 
@@ -57,6 +83,9 @@
       grep = "rg";
       cat = "bat";
       cd = "z";
+
+      clicker = clickerCmd;
+      clicker-tp = clickerTpCmd;
     };
 
   };

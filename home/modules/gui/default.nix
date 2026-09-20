@@ -66,6 +66,8 @@
 
     #VPN
     clash-verge-rev
+
+    theclicker
   ];
 
   # voxtype's Quickshell OSD needs its QML tree installed. The nixpkgs package
