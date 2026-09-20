@@ -80,30 +80,4 @@
     "voxtype/quickshell/voxtype-shared/Theme.qml".source = "${pkgs.voxtype.src}/quickshell/voxtype-shared/Theme.qml";
   };
 
-  # aw-watcher-window-wayland replaces ActivityWatch's X11-based window and
-  # AFK watchers. It reports both buckets itself, so do not let aw-qt start
-  # aw-watcher-window or aw-watcher-afk as well.
-  xdg.configFile."activitywatch/aw-qt/aw-qt.toml".text = ''
-    [aw-qt]
-    autostart_modules = ["aw-server"]
-
-    [aw-qt-testing]
-    autostart_modules = ["aw-server"]
-  '';
-
-  # Start the Wayland watcher with the graphical session. It reports both
-  # window and AFK events, so the X11 watchers must stay disabled in aw-qt.
-  systemd.user.services.aw-watcher-window-wayland = {
-    Unit = {
-      Description = "ActivityWatch Wayland window watcher";
-      After = [ "graphical-session.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${pkgs.aw-watcher-window-wayland}/bin/aw-watcher-window-wayland";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
 }
