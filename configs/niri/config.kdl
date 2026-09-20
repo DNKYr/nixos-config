@@ -19,5 +19,7 @@ input {
 }
 
 spawn-sh-at-startup "sleep 1 && noctalia-shell"
+spawn-sh-at-startup "sleep 1 && udiskie --notify"
+spawn-at-startup "voxtype"
 
 prefer-no-csd
