@@ -59,7 +59,7 @@
       programs.nix-ld.enable = true;
 
       # Set your time zone.
-      time.timeZone = "Asia/Tokyo";
+      time.timeZone = "America/Los_Angeles";
 
       # Enable NTP time synchronization
       services.timesyncd.enable = true;
