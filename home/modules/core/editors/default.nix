@@ -14,5 +14,6 @@
     clang-tools
     stylua
     (lib.hiPrio pkgs.rust-analyzer)
+    emacs
   ];
 }
