@@ -14,7 +14,17 @@
       sccache
       bacon
 
-      python312
+      (python3.withPackages (ps: with ps; [
+        jupyterlab
+        notebook
+        ipykernel
+        numpy
+        matplotlib
+        pandas
+        scipy
+        torch
+        graphviz
+      ]))
       python3Packages.ruff
       basedpyright
       python3Packages.pylint
