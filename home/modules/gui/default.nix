@@ -67,6 +67,11 @@
     #VPN
     clash-verge-rev
 
+    # ESP32 (UCLA Physics 4AL) — add the esp32 core via Boards Manager
+    arduino-ide
+    # IDE 1.8 (`arduino`) — unlike IDE 2 it lists Bluetooth /dev/rfcomm* ports
+    arduino
+
     theclicker
   ];
 

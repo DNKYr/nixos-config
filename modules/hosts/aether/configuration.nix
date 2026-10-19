@@ -123,6 +123,8 @@
           "wheel"
           "docker"
           "input"
+          # Serial access to /dev/ttyUSB* and /dev/ttyACM* (ESP32 flashing/monitor)
+          "dialout"
         ];
         packages = with pkgs; [
           #  thunderbird
