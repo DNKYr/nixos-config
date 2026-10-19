@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 {
+  # Modify PUPPETEER_EXECUTABLE_PATH for md-to-pdf to work in pnpm
+  home.sessionVariables.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+
   home.packages = with pkgs;
     [
 

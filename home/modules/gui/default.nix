@@ -14,7 +14,7 @@
   home.packages = with pkgs; [
 
     # Browser
-    # chromium
+    chromium
     firefox
     tor-browser
 
