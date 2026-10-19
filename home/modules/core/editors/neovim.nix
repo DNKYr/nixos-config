@@ -4,6 +4,11 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+
+    # ~/.config/nvim is an out-of-store symlink to configs/nvim (AstroNvim),
+    # so home-manager must not also write nvim/init.lua there. Sideloading
+    # passes its generated init (provider host paths) via wrapper args instead.
+    sideloadInitLua = true;
   };
 
   home.packages = with pkgs; [
