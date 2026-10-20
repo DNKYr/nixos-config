@@ -10,6 +10,10 @@ return {
         c = { "clang_format" },
         cpp = { "clang_format" },
         rust = { "rustfmt" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -26,6 +30,10 @@ return {
         python = { "ruff" },
         c = { "clangtidy" },
         cpp = { "clangtidy" },
+        javascript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescript = { "eslint" },
+        typescriptreact = { "eslint" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {

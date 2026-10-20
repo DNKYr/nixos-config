@@ -36,6 +36,7 @@ return {
         pyright = {},
         clangd = {},
         rust_analyzer = {},
+        ts_ls = {},
       }
 
       for server, opts in pairs(servers) do
