@@ -22,6 +22,7 @@
     discord
     telegram-desktop
     qq
+    slack
 
     # Editors
     obsidian
