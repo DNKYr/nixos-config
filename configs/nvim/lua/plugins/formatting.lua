@@ -14,6 +14,7 @@ return {
         javascriptreact = { "prettier" },
         typescript = { "prettier" },
         typescriptreact = { "prettier" },
+        haskell = { "fourmolu" },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -34,6 +35,7 @@ return {
         javascriptreact = { "eslint" },
         typescript = { "eslint" },
         typescriptreact = { "eslint" },
+        haskell = { "hlint" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {

@@ -37,6 +37,7 @@ return {
         clangd = {},
         rust_analyzer = {},
         ts_ls = {},
+        hls = {},
       }
 
       for server, opts in pairs(servers) do

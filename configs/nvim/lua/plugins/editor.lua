@@ -17,6 +17,11 @@ return {
         "vim",
         "vimdoc",
         "bash",
+        "haskell",
+        "go",
+        "javascript",
+        "typescript",
+        "tsx",
       })
     end,
   },

@@ -60,6 +60,14 @@
       conan
       pkg-config
 
+      ghc
+      cabal-install
+      stack
+      haskell-language-server
+      fourmolu
+      hlint
+      ghcid
+
       # serial monitor (e.g. ESP32 over Bluetooth on /dev/rfcomm0)
       picocom
 
