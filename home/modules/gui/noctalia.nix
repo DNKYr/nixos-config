@@ -1,19 +1,14 @@
-{ pkgs, inputs, ... }:
+{ inputs, ... }:
 
 {
   imports = [
     inputs.noctalia.homeModules.default
   ];
 
-  programs.noctalia-shell = {
+  programs.noctalia = {
     enable = true;
     settings = {
-    };
-  };
-
-  home.file.".cache/noctalia/wallpapers.json" = {
-    text = builtins.toJSON {
-      defaultWallpaper = "/etc/nixos/home/wallpapers/1387138.png";
+      wallpaper.default.path = "${../../wallpapers/1387138.png}";
     };
   };
 }

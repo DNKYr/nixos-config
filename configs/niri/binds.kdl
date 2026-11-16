@@ -8,11 +8,11 @@ binds {
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
     // Noctalia shell
-    Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
-    Mod+S { spawn-sh "noctalia-shell ipc call controlCenter toggle"; }
-    Mod+Comma { spawn-sh "noctalia-shell ipc call settings toggle"; }
-    Mod+Shift+L { spawn-sh "noctalia-shell ipc call lockScreen lock"; }
-    Ctrl+Alt+Delete { spawn-sh "noctalia-shell ipc call sessionMenu toggle"; }
+    Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
+    Mod+Shift+L { spawn-sh "noctalia msg session lock"; }
+    Ctrl+Alt+Delete { spawn-sh "noctalia msg panel-toggle session"; }
 
     // Volume / mic
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }

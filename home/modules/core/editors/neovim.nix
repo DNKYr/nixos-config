@@ -9,6 +9,10 @@
     # so home-manager must not also write nvim/init.lua there. Sideloading
     # passes its generated init (provider host paths) via wrapper args instead.
     sideloadInitLua = true;
+
+    # No Python/Ruby remote plugins in use; adopt the new home-manager defaults.
+    withPython3 = false;
+    withRuby = false;
   };
 
   home.packages = with pkgs; [

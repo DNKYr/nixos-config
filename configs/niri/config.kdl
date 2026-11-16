@@ -18,7 +18,7 @@ input {
     focus-follows-mouse max-scroll-amount="0%"
 }
 
-spawn-sh-at-startup "sleep 1 && noctalia-shell"
+spawn-sh-at-startup "sleep 1 && noctalia"
 spawn-sh-at-startup "sleep 1 && udiskie --notify"
 spawn-at-startup "voxtype"
 

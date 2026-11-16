@@ -74,12 +74,7 @@
       typescript
       eslint
       prettier
-      # Upstream pnpmDeps hash is stale in nixpkgs; drop this override once fixed.
-      (typescript-language-server.overrideAttrs (finalAttrs: old: {
-        pnpmDeps = old.pnpmDeps.overrideAttrs {
-          outputHash = "sha256-xR/EF60lVBsITKgH7wCM2wHM46PFQevD51KfCENSUH4=";
-        };
-      }))
+      typescript-language-server
       vscode-langservers-extracted
       tailwindcss-language-server
       svelte-language-server
