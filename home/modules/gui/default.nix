@@ -27,6 +27,7 @@
     # Editors
     obsidian
     zed-editor
+    code-cursor
     libreoffice
 
     # voice to text
