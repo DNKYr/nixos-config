@@ -93,5 +93,8 @@
       # database
       sqlite
       sqlitebrowser
+
+      # graph visualization (provides `dot`)
+      graphviz
     ];
 }
