@@ -43,6 +43,17 @@
       pull.rebase = true;
       init.defaultBranch = "main";
     };
+
+    # Repos under ~/sakura/ commit as SakuraRainn
+    includes = [
+      {
+        condition = "gitdir:~/sakura/";
+        contents.user = {
+          name = "SakuraRainn";
+          email = "SakuraRainn@proton.me";
+        };
+      }
+    ];
   };
 
   programs.gh = {
