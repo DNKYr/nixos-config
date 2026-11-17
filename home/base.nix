@@ -11,22 +11,6 @@
     zip
   ];
 
-  # Forward Bluetooth AVRCP commands (headphone buttons) to MPRIS media players
-  systemd.user.services.mpris-proxy = {
-    Unit = {
-      Description = "Bluetooth MPRIS proxy";
-      After = [
-        "network.target"
-        "sound.target"
-      ];
-    };
-    Service = {
-      ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = [ "default.target" ];
-  };
-
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;

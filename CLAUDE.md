@@ -1,6 +1,6 @@
 # nixos-config
 
-> DNKYr's NixOS flake managing two hosts declaratively: `aether` (AMD laptop, full desktop) and `ikuyo` (Hetzner VPS, headless server running a Cloudflare tunnel, an Xray VLESS proxy, and the `dclaw` podman container). System config + home-manager + agenix-managed secrets, all assembled via flake-parts and import-tree.
+> DNKYr's NixOS flake managing two hosts declaratively: `aether` (AMD laptop, full desktop) and `ikuyo` (Hetzner VPS, headless box for running Claude Code and other coding agents). System config + home-manager + agenix-managed secrets, all assembled via flake-parts and import-tree.
 
 ---
 
@@ -30,11 +30,11 @@
 - Feature modules under `modules/features/` MUST follow the flake-parts pattern (`{ ... }: { flake.nixosModules.<name> = { ... }: { ... }; }`) and be imported by name in the host's `configuration.nix` — `import-tree` only registers them, it does not auto-activate them.
 - Never bump `home.stateVersion` or `system.stateVersion` without reading the NixOS release notes — these are one-way migrations that can break stateful data.
 - Raw configs (`configs/niri/`, `configs/nvim/`, `configs/helix/`) are **live-linked** via `mkOutOfStoreSymlink` — `~/.config/<name>` points straight at `~/nixos-config/configs/<name>`, so edits take effect without a rebuild (only the symlink itself is Nix-managed). Edit the source in `configs/`.
-- The flake depends on a **private** input `inputs.secrets` (`git+ssh://git@github.com/DNKYr/nixos-config-secrets`) for non-secret-but-private values (cloudflared tunnel ID + hostname). Eval will fail without SSH access to that repo — that's intentional, not a bug. Use it for any value you want kept out of the public history that isn't sensitive enough to need agenix encryption.
+- The flake depends on a **private** input `inputs.secrets` (`git+ssh://git@github.com/DNKYr/nixos-config-secrets`) for non-secret-but-private values. Nothing consumes it right now (its last user, the ikuyo cloudflared tunnel, was removed), but the input is kept for future use. Eval will fail without SSH access to that repo — that's intentional, not a bug. Use it for any value you want kept out of the public history that isn't sensitive enough to need agenix encryption.
 - `secrets/secrets.nix` lists the host SSH public keys allowed to decrypt each `.age` file. After adding a new host or rotating a key, update this file AND re-key (`agenix -r`) — otherwise the host can't read its own secrets at activation time.
 - Hibernate on aether is currently **disabled** — `self.nixosModules.aether-hibernate` is commented out in `modules/hosts/aether/configuration.nix`. The module (`hibernate.nix`) is retained for easy re-enabling. If re-enabled, the swapfile-based setup hardcodes `boot.resumeDevice` UUID and `resume_offset`; if `/swapfile` is recreated, recompute the offset (`sudo filefrag -v /swapfile | awk 'FNR==4{print $4}' | sed 's/\.\.//'`) before rebuilding, or hibernate-resume will silently fail.
 - `ikuyo` uses GRUB with `efiSupport = false` (BIOS boot via the GPT EF02 partition declared in `disko.nix`). Don't flip on `efiSupport` without also reshaping the disk layout.
-- `ikuyo`'s firewall opens **only** TCP 22 (SSH) and TCP 443 (Xray VLESS+Reality direct inbound). The Cloudflare tunnel is outbound-only and needs no inbound rule; the `dclaw` WebUI is bound to `127.0.0.1:8765` only (reach it via `ssh -L 8765:localhost:8765 ikuyo`). Adding a new public service means adding the port to `networking.firewall.allowedTCPPorts` in `modules/hosts/ikuyo/configuration.nix`.
+- `ikuyo`'s firewall opens **only** TCP 22 (SSH). It runs coding agents with shell access, so keep anything else (dev servers, web UIs) bound to `127.0.0.1` and reach it via `ssh -L <port>:localhost:<port> ikuyo`. Adding a new public service means adding the port to `networking.firewall.allowedTCPPorts` in `modules/hosts/ikuyo/configuration.nix`.
 - `aether` opens TCP+UDP 53317 (LocalSend) publicly, and SSH (TCP 22) **only on the `tailscale0` interface**. Tailscale runs with `--accept-dns=false` because MagicDNS breaks the UCLA VPN — don't drop that flag.
 
 ---
@@ -43,11 +43,11 @@
 
 A Nix flakes-based NixOS configuration for two hosts:
 - **`aether`** — AMD laptop with full desktop (Niri Wayland, gaming, IME, home-manager), plus Tailscale (SSH over tailnet only), Docker, and `nix-ld` (for uv venvs and upstream binaries like openscience). Hibernate-to-swapfile is wired but currently disabled. Timezone `America/Los_Angeles`.
-- **`ikuyo`** — Hetzner Cloud VPS (qemu-guest, BIOS/GRUB, ext4 via [disko](https://github.com/nix-community/disko), SSH-only login, secrets via [agenix](https://github.com/ryantm/agenix), no home-manager). Runs a Cloudflare tunnel (`services.cloudflared`) fronting `http://localhost:8001`, Xray with a VLESS+Reality direct inbound on `:443`, and the `dclaw` container (`ghcr.io/dnkyr/dclaw:latest`, private image) under rootful podman.
+- **`ikuyo`** — Hetzner Cloud VPS (qemu-guest, BIOS/GRUB, ext4 via [disko](https://github.com/nix-community/disko), SSH-only login, secrets via [agenix](https://github.com/ryantm/agenix)). Headless box for running Claude Code / other coding agents in zellij sessions: home-manager with the terminal `core` set + `cli/coding-agent.nix` (no GUI, no heavy `dev-tools.nix` — 2 vCPU / 4 GB RAM / 38 GB disk), plus nix-ld.
 
-The flake is assembled with [`flake-parts`](https://flake.parts) and [`import-tree`](https://github.com/vic/import-tree): every `.nix` file under `./modules/` is auto-discovered and merged into the flake. Each system-level module declares itself as `flake.nixosModules.<name>`; each host's `configuration.nix` then composes the desired modules via `self.nixosModules.<name>`. User environment (packages, dotfiles, shell) is layered on top via home-manager (`home/`), kept out of the auto-import tree and pulled in explicitly from the host config — currently only `aether` wires home-manager. External programs without nixpkgs packages are pulled in via flake inputs (noctalia shell, zen-browser, nix-gaming, emtodo, claude-desktop). Remote provisioning uses `nixos-anywhere` + `disko`; secrets are encrypted at rest with `agenix`; non-secret-but-private values (tunnel IDs, hostnames) live in a separate private flake input (`inputs.secrets`).
+The flake is assembled with [`flake-parts`](https://flake.parts) and [`import-tree`](https://github.com/vic/import-tree): every `.nix` file under `./modules/` is auto-discovered and merged into the flake. Each system-level module declares itself as `flake.nixosModules.<name>`; each host's `configuration.nix` then composes the desired modules via `self.nixosModules.<name>`. User environment (packages, dotfiles, shell) is layered on top via home-manager (`home/`), kept out of the auto-import tree and pulled in explicitly from the host config — both hosts wire home-manager (`aether` with everything, `ikuyo` with the terminal subset). External programs without nixpkgs packages are pulled in via flake inputs (noctalia shell, zen-browser, nix-gaming, emtodo, claude-desktop). Remote provisioning uses `nixos-anywhere` + `disko`; secrets are encrypted at rest with `agenix`; non-secret-but-private values would live in a separate private flake input (`inputs.secrets`, currently unused).
 
-**Stack:** Nix flakes, flake-parts, import-tree, NixOS unstable, home-manager, disko, nixos-anywhere, agenix, Niri (Wayland) + SDDM, Zsh (default, oh-my-zsh) + Nushell + Starship, Zellij, Alacritty, Neovim (from-scratch lazy.nvim config, default `$EDITOR`) + Helix + Emacs, btop, Jujutsu + Git/gh, fcitx5 (mozc + Chinese addons), Pipewire, Bluetooth, Steam + Gamescope + Gamemode, auto-cpufreq, `clash-verge-rev` (VPN client), openconnect (UCLA VPN on aether), Tailscale + Docker + nix-ld (aether), OpenSSH + `cloudflared` + `xray` + podman/oci-containers (ikuyo). Task runner: `just`.
+**Stack:** Nix flakes, flake-parts, import-tree, NixOS unstable, home-manager, disko, nixos-anywhere, agenix, Niri (Wayland) + SDDM, Zsh (default, oh-my-zsh) + Nushell + Starship, Zellij, Alacritty, Neovim (from-scratch lazy.nvim config, default `$EDITOR`) + Helix + Emacs, btop, Jujutsu + Git/gh, fcitx5 (mozc + Chinese addons), Pipewire, Bluetooth, Steam + Gamescope + Gamemode, auto-cpufreq, `clash-verge-rev` (VPN client), openconnect (UCLA VPN on aether), Tailscale + Docker + nix-ld (aether), OpenSSH + nix-ld + coding agents (ikuyo). Task runner: `just`.
 **Entry point:** `flake.nix` → `flake-parts.lib.mkFlake` → `import-tree ./modules` → `nixosConfigurations.{aether,ikuyo}`.
 
 ---
@@ -88,41 +88,30 @@ modules/                                  ← every .nix here is auto-imported b
           │     │                          + lid → hibernate; opt-in via configuration.nix imports)
           │     └── ucla-vpn.nix          (flake.nixosModules.aether-ucla-vpn — openconnect wrapper
           │                                for UCLA AnyConnect VPN with SAML external-browser auth)
-          └── ikuyo/                      (Hetzner VPS, headless)
-                ├── default.nix           (flake.nixosConfigurations.ikuyo — no home-manager)
+          └── ikuyo/                      (Hetzner VPS, headless agent box)
+                ├── default.nix           (flake.nixosConfigurations.ikuyo,
+                │                          wires home-manager with extraSpecialArgs = { inputs; })
                 ├── configuration.nix     (flake.nixosModules.ikuyo-config:
-                │                          imports base + hardware + disko + optimize + xray +
-                │                          cloudflared + dclaw + agenix; declares all age.secrets.*;
-                │                          GRUB BIOS, OpenSSH key-only, sudo-with-password,
-                │                          firewall TCP {22, 443}, dnkyr user with hashedPasswordFile)
+                │                          imports base + hardware + disko + optimize + agenix;
+                │                          GRUB BIOS, OpenSSH key-only, sudo-with-password, allowUnfree,
+                │                          nix-ld, firewall TCP 22 only, dnkyr user with hashedPasswordFile)
                 ├── disko.nix             (flake.nixosModules.ikuyo-disko: GPT, EF02 boot + ext4 root on /dev/sda)
-                ├── xray.nix              (flake.nixosModules.ikuyo-xray: services.xray with settingsFile
-                │                          pointing at the decrypted ikuyo-xray-config secret)
-                ├── cloudflared.nix       (flake.nixosModules.ikuyo-cloudflared: services.cloudflared tunnel,
-                │                          tunnelId + hostname pulled from inputs.secrets.lib.ikuyo.cloudflared,
-                │                          ingress.<hostname> → http://localhost:8001)
-                ├── dclaw.nix             (flake.nixosModules.ikuyo-dclaw: rootful podman + oci-containers
-                │                          `dclaw` from private ghcr.io (login via ikuyo-ghcr-token),
-                │                          --pull=always, port 127.0.0.1:8765, state in /var/lib/dclaw,
-                │                          ikuyo-dclaw-config mounted read-only as config.json;
-                │                          restartTriggers on the .age files so secret edits restart it)
                 └── hardware.nix          (flake.nixosModules.ikuyo-hardware — AUTO-GENERATED qemu-guest profile)
 
 secrets/                                  (agenix-encrypted secrets, decrypted at activation)
     ├── secrets.nix                       (maps each .age file → list of host SSH pubkeys allowed to decrypt)
-    ├── ikuyo-dnkyr-password.age          (hashed password for the `dnkyr` user on ikuyo)
-    ├── ikuyo-xray-config.age             (full Xray JSON settings: inbounds, UUIDs, Reality keys)
-    ├── ikuyo-cloudflared-creds.age       (Cloudflare tunnel credentials JSON for `services.cloudflared`)
-    ├── ikuyo-dclaw-config.age            (dclaw/nanobot config.json: provider API key + websocket secret;
-    │                                      owner dnkyr, mode 0400 — container UID 1000 maps to dnkyr)
-    └── ikuyo-ghcr-token.age              (read-only GitHub PAT for pulling the private dclaw image)
+    └── ikuyo-dnkyr-password.age          (hashed password for the `dnkyr` user on ikuyo)
 
 home/                                     ← NOT auto-imported; referenced explicitly from the host
-    ├── base.nix                          (cross-host home defaults: zip/unzip, mpris-proxy,
+    ├── base.nix                          (cross-host home defaults: zip/unzip,
     │                                      direnv, git, gh, jujutsu, fastfetch, home.stateVersion)
     ├── hosts/aether/home.nix             (per-host: imports base + gui + cli + core modules,
     │                                      live-links configs/{nvim,niri,helix} via mkOutOfStoreSymlink,
     │                                      .clang-format, emtodo)
+    ├── hosts/ikuyo/home.nix              (per-host: imports base + core + cli/coding-agent.nix only
+    │                                      (no gui, no dev-tools); nvim deliberately unconfigured (stock);
+    │                                      live-links configs/helix — expects the repo cloned to
+    │                                      ~/nixos-config on ikuyo)
     ├── wallpapers/                       (wallpaper images referenced by noctalia: 1387138.png is current)
     └── modules/
           ├── core/                       (terminal-only essentials; safe on any host, headless included)
@@ -154,7 +143,8 @@ home/                                     ← NOT auto-imported; referenced expl
           │                                deno/bun/pnpm/yarn/biome, sqlite; sets PUPPETEER_EXECUTABLE_PATH
           │                                to nix chromium; graphviz)
           └── gui/                        (graphical apps; only safe with a display server)
-                ├── default.nix           (imports the files below + GUI app pkgs: chromium, firefox,
+                ├── default.nix           (imports the files below + Bluetooth mpris-proxy user service +
+                │                          GUI app pkgs: chromium, firefox,
                 │                          tor-browser, discord, telegram-desktop, qq, slack, obsidian,
                 │                          zed-editor, code-cursor, libreoffice, voxtype (vulkan) + its
                 │                          quickshell QML via xdg.dataFile, dolphin, udiskie, localsend,
@@ -190,8 +180,8 @@ justfile                                  (task runner via `just`; recipes: up (
 **Key invariants:**
 - `modules/` is auto-discovered by `import-tree`. Any `.nix` file dropped under it is imported as a flake-parts module — keep it free of dead code.
 - Feature modules under `modules/features/` follow the pattern `{ ... }: { flake.nixosModules.<name> = { ... }: { ...NixOS options... }; };`. To consume one, add `self.nixosModules.<name>` to `imports` in the relevant host's `configuration.nix`.
-- Each host gets its own subdir under `modules/hosts/<host>/` with `default.nix` (declares `flake.nixosConfigurations.<host>`) + `configuration.nix` (declares `flake.nixosModules.<host>-config`) + any host-specific helper modules (`disko.nix`, `hibernate.nix`, `xray.nix`, `cloudflared.nix`, `dclaw.nix`, …). Cross-host code lives in `modules/features/`.
-- Home-manager is wired per-host in `modules/hosts/<host>/default.nix`; `home/` files are NOT auto-imported. New home modules go under `home/modules/core/` (terminal essentials), `home/modules/cli/` (coding agents + language toolchains), or `home/modules/gui/` (needs display server), and are pulled in by name from the host's `home/hosts/<host>/home.nix`. Only `aether` currently uses home-manager — `ikuyo` is system-only.
+- Each host gets its own subdir under `modules/hosts/<host>/` with `default.nix` (declares `flake.nixosConfigurations.<host>`) + `configuration.nix` (declares `flake.nixosModules.<host>-config`) + any host-specific helper modules (`disko.nix`, `hibernate.nix`, `ucla-vpn.nix`, …). Cross-host code lives in `modules/features/`.
+- Home-manager is wired per-host in `modules/hosts/<host>/default.nix`; `home/` files are NOT auto-imported. New home modules go under `home/modules/core/` (terminal essentials), `home/modules/cli/` (coding agents + language toolchains), or `home/modules/gui/` (needs display server), and are pulled in by name from the host's `home/hosts/<host>/home.nix`. `ikuyo` imports only `core/` + `cli/coding-agent.nix` — never pull `gui/` (or the heavy `dev-tools.nix`) into it.
 - `modules/` is for NixOS system-level options only; user-space belongs in `home/modules/`.
 - `configs/` is for raw non-Nix config files only; Nix-managed program settings go inline in the `.nix` module.
 - `flake.nix` passes `inputs` to the flake-parts tree (outer-module args `{ self, inputs, ... }`) and to home-manager via `extraSpecialArgs = { inherit inputs; }` — home modules destructure `inputs` directly.
@@ -216,8 +206,7 @@ justfile                                  (task runner via `just`; recipes: up (
 | User-space tool with non-trivial config | New `home/modules/{core,cli,gui}/<name>.nix`, imported via the matching `default.nix` | Keeps host file thin |
 | Tool provided by a flake input (not nixpkgs) | New or existing `home/modules/{core,cli,gui}/<name>.nix` with `inputs` in args | Flake-sourced packages reference `inputs.<name>.packages.${pkgs.stdenv.hostPlatform.system}.<pkg>` (see `home/modules/gui/gaming.nix`) |
 | System-level service or hardware config (reusable across hosts) | New `modules/features/<name>.nix` defining `flake.nixosModules.<name>`, then add `self.nixosModules.<name>` to the consuming host's `configuration.nix` imports | flake-parts auto-discovers the file; each host explicitly opts in |
-| System-level config truly specific to one host | Inline in `modules/hosts/<host>/configuration.nix`, or a new `modules/hosts/<host>/<topic>.nix` declaring `flake.nixosModules.<host>-<topic>` | Host-private, not reusable (see `ikuyo-xray`, `ikuyo-cloudflared`, `ikuyo-dclaw`) |
-| Containerised service on ikuyo | `virtualisation.oci-containers.containers.<name>` (podman backend) in a `modules/hosts/ikuyo/<name>.nix`; bind to `127.0.0.1` unless it truly must be public | Follow `dclaw.nix`: secrets via agenix mounts, `restartTriggers` on the `.age` files |
+| System-level config truly specific to one host | Inline in `modules/hosts/<host>/configuration.nix`, or a new `modules/hosts/<host>/<topic>.nix` declaring `flake.nixosModules.<host>-<topic>` | Host-private, not reusable (see `aether-ucla-vpn`, `aether-hibernate`, `ikuyo-disko`) |
 | Font | `modules/features/font.nix` | Fonts are system-level (fontconfig) |
 | Encrypted credential / password / API key / service config containing secrets | New `secrets/<name>.age` (via `agenix -e`), referenced as `age.secrets.<name>.file = ../../../secrets/<name>.age;` and consumed via `config.age.secrets.<name>.path` | Plaintext secrets must never enter the Nix store / git history |
 | Non-sensitive but private value (tunnel ID, hostname, internal URL) | Push to the `nixos-config-secrets` private repo and consume via `inputs.secrets.lib.*` | Keeps the public flake clonable for inspection without leaking infra details |
@@ -280,7 +269,7 @@ justfile                                  (task runner via `just`; recipes: up (
 ### Wrong outer args in a feature module (flake-parts vs NixOS)
 **Root cause:** Feature modules under `modules/features/` and host modules under `modules/hosts/<host>/` are flake-parts modules, not NixOS modules. The outer function receives flake-parts args (`{ self, inputs, ... }`) and must declare `flake.nixosModules.<name> = { ...NixOS args... }: { ... };`. Trying to put NixOS options at the top level (or destructuring `pkgs` in the outer args) won't work.
 **Symptom:** `error: attribute 'pkgs' missing` in the outer function, or options like `services.X` being silently ignored.
-**Fix:** Match the pattern in existing files (`modules/features/niri.nix`, `optimize.nix`, `modules/hosts/ikuyo/disko.nix`, `xray.nix`, `cloudflared.nix`): outer `{ ... }:` returns `{ flake.nixosModules.<name> = { config, pkgs, ... }: { ... }; }`. Then add `self.nixosModules.<name>` to the consuming host's imports.
+**Fix:** Match the pattern in existing files (`modules/features/niri.nix`, `optimize.nix`, `modules/hosts/ikuyo/disko.nix`, `modules/hosts/aether/ucla-vpn.nix`): outer `{ ... }:` returns `{ flake.nixosModules.<name> = { config, pkgs, ... }: { ... }; }`. Then add `self.nixosModules.<name>` to the consuming host's imports.
 
 ### Adding a feature module but forgetting to import it
 **Root cause:** `import-tree` discovering a file under `modules/` only registers it (e.g. as `flake.nixosModules.foo`). No host actually uses it until you list `self.nixosModules.foo` in the `imports` of the relevant host's `configuration.nix` (`aether-config` or `ikuyo-config`).
@@ -314,13 +303,13 @@ justfile                                  (task runner via `just`; recipes: up (
 
 ### agenix secret unreadable on a host after key rotation or new host
 **Root cause:** Each `.age` file is encrypted to the exact set of public keys in `secrets/secrets.nix` at the time of `agenix -e`. If a host's SSH host key changes (reinstall, fresh deploy), or a new host is added, existing secrets stay encrypted to the old key set.
-**Symptom:** Activation fails on the host with `agenix: failed to decrypt /run/agenix/<name>` or the user has no usable password / xray won't start / cloudflared can't authenticate / the `dclaw` image pull or container start fails.
+**Symptom:** Activation fails on the host with `agenix: failed to decrypt /run/agenix/<name>` or the `dnkyr` user on ikuyo has no usable password (sudo breaks).
 **Fix:** Update `secrets/secrets.nix` with the current host pubkey (`cat /etc/ssh/ssh_host_ed25519_key.pub` on the host), then `cd secrets && agenix -r` to re-encrypt every secret to the new key set. Commit the updated `.age` files.
 
 ### Cloning the public repo fails eval because `inputs.secrets` is private
 **Root cause:** `flake.nix` declares `secrets` as a `git+ssh://` flake input pointing at a private GitHub repo. Without SSH access to `DNKYr/nixos-config-secrets`, `nix flake` operations fail at the input-fetch stage.
 **Symptom:** `error: unable to download ...nixos-config-secrets...: Permission denied (publickey)`.
-**Fix (for the owner):** Ensure SSH key has access to the repo. **Fix (for anyone else):** Either get read access, or fork the flake and replace `inputs.secrets` with a stub that provides the same `lib.ikuyo.cloudflared.{tunnelId,hostname}` shape.
+**Fix (for the owner):** Ensure SSH key has access to the repo. **Fix (for anyone else):** Either get read access, or fork the flake and delete the `secrets` input from `flake.nix` (nothing consumes it right now).
 
 ### nixos-anywhere wipes the disk per `disko.nix`
 **Root cause:** `nixos-anywhere --flake .#ikuyo` runs the `ikuyo-disko` module, which formats `/dev/sda` end-to-end (GPT, EF02 boot, ext4 root). This is the intended bootstrap flow for a fresh VPS but is destructive on any existing data.

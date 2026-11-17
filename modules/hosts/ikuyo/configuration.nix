@@ -15,20 +15,14 @@
         self.nixosModules.ikuyo-hardware
         self.nixosModules.ikuyo-disko
         self.nixosModules.optimize
-        self.nixosModules.ikuyo-xray
-        self.nixosModules.ikuyo-cloudflared
-        self.nixosModules.ikuyo-dclaw
       ];
 
       age.secrets.dnkyr-password.file = ../../../secrets/ikuyo-dnkyr-password.age;
-      age.secrets.ikuyo-xray-config.file = ../../../secrets/ikuyo-xray-config.age;
-      age.secrets.ikuyo-cloudflared-creds.file = ../../../secrets/ikuyo-cloudflared-creds.age;
-      age.secrets.ikuyo-dclaw-config = {
-        file = ../../../secrets/ikuyo-dclaw-config.age;
-        owner = "dnkyr"; # readable by the container's UID-1000 nanobot user
-        mode = "0400";
-      };
-      age.secrets.ikuyo-ghcr-token.file = ../../../secrets/ikuyo-ghcr-token.age;
+
+      nixpkgs.config.allowUnfree = true; # claude-code, codex
+
+      # Upstream prebuilt binaries (e.g. openscience in coding-agent.nix, uv venvs).
+      programs.nix-ld.enable = true;
 
       boot.loader.grub = {
         enable = true;
@@ -72,10 +66,7 @@
 
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [
-          22
-          443 # xray VLESS+Reality direct
-        ];
+        allowedTCPPorts = [ 22 ];
       };
 
       system.stateVersion = "25.11";
