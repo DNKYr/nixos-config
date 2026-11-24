@@ -60,6 +60,10 @@
       conan
       pkg-config
 
+      # kernel development — boot test kernels (`qemu-system-x86_64 -enable-kvm
+      # -kernel arch/x86/boot/bzImage ...`); full build covers all target arches
+      qemu
+
       ghc
       cabal-install
       stack
