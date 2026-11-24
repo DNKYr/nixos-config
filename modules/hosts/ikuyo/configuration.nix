@@ -39,6 +39,14 @@
         "@wheel"
       ];
 
+      # 4 GB RAM is tight for nix builds + several agents; give it headroom.
+      swapDevices = [
+        {
+          device = "/var/lib/swapfile";
+          size = 4096;
+        }
+      ];
+
       networking.hostName = "ikuyo";
       time.timeZone = "UTC";
       i18n.defaultLocale = "en_US.UTF-8";
