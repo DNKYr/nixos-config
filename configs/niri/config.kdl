@@ -21,5 +21,6 @@ input {
 spawn-sh-at-startup "sleep 1 && noctalia"
 spawn-sh-at-startup "sleep 1 && udiskie --notify"
 spawn-at-startup "voxtype"
+spawn-at-startup "fcitx5" "-d" "--replace"
 
 prefer-no-csd
