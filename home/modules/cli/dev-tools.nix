@@ -91,5 +91,10 @@
 
       # graph visualization (provides `dot`)
       graphviz
+
+      # LaTeX — full TeX Live (tlmgr can't install packages on NixOS, so go
+      # full rather than chase missing .sty files); includes latexmk, biber
+      texliveFull
+      texlab
     ];
 }
