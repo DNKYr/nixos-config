@@ -157,6 +157,8 @@ home/                                     ← NOT auto-imported; referenced expl
                 ├── zen-browser.nix       (zen-browser + policies, extensions, search engines)
                 ├── claude-desktop.nix    (claude-desktop flake input, re-wrapped with Wayland IME flags
                 │                          + --password-store=gnome-libsecret for niri)
+                ├── magpie.nix            (yetone/magpie built from source with buildGoModule — Wails v3,
+                │                          GTK 3 + WebKitGTK 4.1; update by bumping version + src/vendor hashes)
                 ├── spotify.nix           (spotify)
                 ├── android.nix           (placeholder — android-studio/android-tools commented out)
                 └── gaming.nix            (osu-lazer-bin via nix-gaming, heroic, prismlauncher, protonplus)

@@ -9,6 +9,7 @@
     ./android.nix
     ./spotify.nix
     ./claude-desktop.nix
+    ./magpie.nix
   ];
 
   # Forward Bluetooth AVRCP commands (headphone buttons) to MPRIS media players
